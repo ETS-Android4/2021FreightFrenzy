@@ -16,7 +16,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.1'
-        implementation 'org.openftc:easyopencv:1.5.0'
     }
 }
 
@@ -67,4 +66,3 @@ task extractJavadoc {
         }
     }
 }
-

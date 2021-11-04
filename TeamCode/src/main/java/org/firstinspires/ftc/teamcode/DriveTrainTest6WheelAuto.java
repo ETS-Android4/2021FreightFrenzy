@@ -2,21 +2,19 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name = "DriveTrainTestLinearOp")
-public class DriveTrainTest6Wheel extends LinearOpMode {
+@Autonomous(name = "DriveTrainTestAutonomous")
+public class DriveTrainTest6WheelAuto extends LinearOpMode {
 
     private DcMotor frontLeft;
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
 
+
     @Override
     public void runOpMode() throws InterruptedException {
-
-        //TODO: Hardware mapping when phones are configured;
 
         //Set brake.
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -32,14 +30,38 @@ public class DriveTrainTest6Wheel extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            frontLeft.setPower(-gamepad1.left_stick_y);
-            backLeft.setPower(-gamepad1.left_stick_y);
-
-            frontRight.setPower(-gamepad1.right_stick_y);
-            backRight.setPower(-gamepad1.right_stick_y);
+            moveForward(1.0, 1000);
+            sleep(1000);
+            moveLeft(1.0, 1000);
 
         }
 
     }
-}
 
+    public void moveForward(double power, long time) {
+
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+        backLeft.setPower(power);
+        backRight.setPower(power);
+
+        sleep(time);
+
+        frontLeft.setPower(0);
+        frontRight.setPower(0);
+        backLeft.setPower(0);
+        backRight.setPower(0);
+
+    }
+
+    public void moveLeft(double power, long time) {
+
+        frontLeft.setPower(power);
+        backLeft.setPower(power);
+        frontRight.setPower(0);
+        backRight.setPower(0);
+
+        sleep(time);
+
+    }
+}

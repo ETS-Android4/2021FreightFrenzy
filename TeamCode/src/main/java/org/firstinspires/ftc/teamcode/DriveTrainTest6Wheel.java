@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "DriveTrainTestLinearOp")
 public class DriveTrainTest6Wheel extends LinearOpMode {
@@ -17,6 +17,11 @@ public class DriveTrainTest6Wheel extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         //TODO: Hardware mapping when phones are configured;
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+
 
         //Set brake.
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -24,9 +29,8 @@ public class DriveTrainTest6Wheel extends LinearOpMode {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        //No need for reverse directions
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
 

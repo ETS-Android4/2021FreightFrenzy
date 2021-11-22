@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name = "DriveTrainTestLinearOp")
 public class MainTeleOp extends LinearOpMode {
@@ -32,18 +33,20 @@ public class MainTeleOp extends LinearOpMode {
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
+        double minPower = -.75;
+        double maxPower = .75;
+
         waitForStart();
 
         while (opModeIsActive()) {
 
-            frontLeft.setPower(-gamepad1.left_stick_y);
-            backLeft.setPower(-gamepad1.left_stick_y);
+            frontLeft.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
+            backLeft.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
 
-            frontRight.setPower(-gamepad1.right_stick_y);
-            backRight.setPower(-gamepad1.right_stick_y);
+            frontRight.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
+            backRight.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
 
         }
 
     }
 }
-

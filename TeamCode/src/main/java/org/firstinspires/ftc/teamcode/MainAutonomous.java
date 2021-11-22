@@ -44,6 +44,8 @@ public class MainAutonomous extends LinearOpMode {
 
         waitForStart();
 
+        driveForward(0.5, 1000);
+        turnRight(90, 0.5);
 
     }
 
@@ -65,13 +67,24 @@ public class MainAutonomous extends LinearOpMode {
 
     }
 
-    public void turnRight (int angle, double power) {
+    public void turnRight(int angle, double power) {
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         sleep(500);
 
         frontLeft.setPower(power);
         backLeft.setPower(power);
+        frontRight.setPower(-power);
+        backRight.setPower(-power);
+
+        while (angles.firstAngle > -angle && !isStopRequested()) {
+
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        }
+
+        frontLeft.setPower(0);
+        backLeft.setPower(0);
         frontRight.setPower(0);
         backRight.setPower(0);
 

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "DriveTrainTestLinearOp")
-public class DriveTrainTest6Wheel extends LinearOpMode {
+public class MainTeleOp extends LinearOpMode {
 
     private DcMotor frontLeft;
     private DcMotor frontRight;

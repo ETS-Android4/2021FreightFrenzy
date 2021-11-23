@@ -41,7 +41,7 @@ public class MainTeleOp extends LinearOpMode {
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -58,6 +58,7 @@ public class MainTeleOp extends LinearOpMode {
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+
         double minPower = -.75;
         double maxPower = .75;
 
@@ -65,11 +66,12 @@ public class MainTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            frontLeft.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
-            backLeft.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
+            //compensate for hardware issue
+            frontLeft.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
+            backLeft.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
 
-            frontRight.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
-            backRight.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
+            frontRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
+            backRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
 
             if (gamepad1.b) {
 

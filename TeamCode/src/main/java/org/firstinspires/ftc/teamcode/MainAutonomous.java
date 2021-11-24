@@ -113,12 +113,12 @@ public class MainAutonomous extends LinearOpMode {
         telemetry.update();
 
         //variable for how fast the robot willmove
-        double DRIVE_POWER = 0.5;
+        double DRIVE_POWER = 0.8;
 
         waitForStart();
 
         encoderDrive(DRIVE_SPEED,  6,  6, 5.0);
-        rotate(90, 0.5);
+        rotate(90, 0.8);
         encoderDrive(DRIVE_SPEED,  -6,  -6, 5.0);
 
 

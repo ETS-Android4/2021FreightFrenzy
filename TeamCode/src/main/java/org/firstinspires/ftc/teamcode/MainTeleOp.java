@@ -59,8 +59,8 @@ public class MainTeleOp extends LinearOpMode {
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-        double minPower = -.75;
-        double maxPower = .75;
+        double minPower = -.7;
+        double maxPower = .7;
 
         waitForStart();
 

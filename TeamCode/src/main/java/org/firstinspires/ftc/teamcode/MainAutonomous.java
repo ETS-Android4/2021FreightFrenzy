@@ -36,11 +36,11 @@ public class MainAutonomous extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;
-    static final double     DRIVE_GEAR_REDUCTION    = 9.5 ;
-    static final double     WHEEL_DIAMETER_INCHES   = 4.75 ;
+    static final double     DRIVE_GEAR_REDUCTION    = 1 ;
+    static final double     WHEEL_DIAMETER_INCHES   = 4.724 ;
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.2;
+            (WHEEL_DIAMETER_INCHES * 3.14159265);
+    static final double     DRIVE_SPEED             = 0.60;
     static final double     TURN_SPEED              = 0.15;
 
 
@@ -112,14 +112,11 @@ public class MainAutonomous extends LinearOpMode {
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
 
-        //variable for how fast the robot willmove
-        double DRIVE_POWER = 0.8;
-
         waitForStart();
 
-        encoderDrive(DRIVE_SPEED,  6,  6, 5.0);
-        rotate(90, 0.8);
-        encoderDrive(DRIVE_SPEED,  -6,  -6, 5.0);
+        encoderDrive(DRIVE_SPEED,  10,  10, 10.0);
+        //rotate(90, 0.8);
+        //encoderDrive(DRIVE_SPEED,  -6,  -6, 5.0);
 
 
 

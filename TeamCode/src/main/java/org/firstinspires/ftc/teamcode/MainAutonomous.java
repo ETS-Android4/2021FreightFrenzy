@@ -19,9 +19,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
-@Autonomous(name = "AutoIMUEncoder")
+@Autonomous(name = "MainAutonomous")
 
-public class AutoIMUEncoder extends LinearOpMode {
+public class MainAutonomous extends LinearOpMode {
 
     public DcMotor frontLeft;
     public DcMotor frontRight;
@@ -277,8 +277,10 @@ public class AutoIMUEncoder extends LinearOpMode {
 
 
         //sets power to motors with negative signs properly assigned to make the robot go in the correct direction
-        frontLeft.setPower(leftPower);
-        frontRight.setPower(rightPower);
+        frontLeft.setPower(rightPower);
+        backLeft.setPower(rightPower);
+        frontRight.setPower(leftPower);
+        backRight.setPower(rightPower);
 
         //Repeatedly check the IMU until the getAngle() function returns the value specified.
         if (degrees < 0)

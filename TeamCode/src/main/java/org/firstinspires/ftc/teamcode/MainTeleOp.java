@@ -73,6 +73,7 @@ public class MainTeleOp extends LinearOpMode {
             frontRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
             backRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
 
+            //spinner movement
             if (gamepad1.b) {
 
                 spinner.setPower(0.7);

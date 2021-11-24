@@ -115,7 +115,8 @@ public class MainAutonomous extends LinearOpMode {
         waitForStart();
 
         encoderDrive(DRIVE_SPEED,  6,  6, 5.0);
-        //rotate(90, 0.8);
+        sleep(1000);
+        rotate(90, 0.5);
         //encoderDrive(DRIVE_SPEED,  -6,  -6, 5.0);
 
 
@@ -253,11 +254,13 @@ public class MainAutonomous extends LinearOpMode {
     }
 
     //The method turns the robot by a specific angle, -180 to +180.
-    public void rotate(int degrees, double power)
+    public void rotate(double degrees, double power)
     {
         double  leftPower, rightPower;
 
         resetAngle();
+
+        degrees = degrees - 22.5;
 
         //if the degrees are less than 0, the robot will turn right
         if (degrees < 0)

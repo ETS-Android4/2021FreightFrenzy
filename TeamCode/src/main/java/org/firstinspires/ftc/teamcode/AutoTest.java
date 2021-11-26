@@ -19,9 +19,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
-@Autonomous(name = "AutoTest")
+@Autonomous(name = "MainAutonomous")
 
-public class AutoTest extends LinearOpMode {
+public class MainAutonomous extends LinearOpMode {
 
     public DcMotor frontLeft;
     public DcMotor frontRight;
@@ -36,7 +36,7 @@ public class AutoTest extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;
-    static final double     DRIVE_GEAR_REDUCTION    = 1.23; //perfect value
+    static final double     DRIVE_GEAR_REDUCTION    = 1 ;
     static final double     WHEEL_DIAMETER_INCHES   = 4.724 ;
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159265);
@@ -114,9 +114,8 @@ public class AutoTest extends LinearOpMode {
 
         waitForStart();
 
-        encoderDrive(DRIVE_SPEED,  6,  6, 5.0);
-        sleep(1000);
-        rotate(90, 0.5);
+        encoderDrive(DRIVE_SPEED,  10,  10, 10.0);
+        //rotate(90, 0.8);
         //encoderDrive(DRIVE_SPEED,  -6,  -6, 5.0);
 
 
@@ -254,13 +253,11 @@ public class AutoTest extends LinearOpMode {
     }
 
     //The method turns the robot by a specific angle, -180 to +180.
-    public void rotate(double degrees, double power)
+    public void rotate(int degrees, double power)
     {
         double  leftPower, rightPower;
 
         resetAngle();
-
-        degrees = degrees - 22.5;
 
         //if the degrees are less than 0, the robot will turn right
         if (degrees < 0)

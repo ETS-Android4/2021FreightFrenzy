@@ -315,6 +315,7 @@ public class AutoTest extends LinearOpMode {
     }
 
 
+    //spinner use
 
 
 }

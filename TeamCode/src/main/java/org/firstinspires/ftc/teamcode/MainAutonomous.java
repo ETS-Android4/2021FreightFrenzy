@@ -19,7 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
-@Autonomous(name = "AutoIMUEncoder")
+@Autonomous(name = "MainAutonomous")
 
 public class MainAutonomous extends LinearOpMode {
 

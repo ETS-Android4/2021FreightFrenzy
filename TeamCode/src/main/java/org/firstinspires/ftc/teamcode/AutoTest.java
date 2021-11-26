@@ -36,11 +36,11 @@ public class AutoTest extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     static final double     COUNTS_PER_MOTOR_REV    = 537.6 ;
-    static final double     DRIVE_GEAR_REDUCTION    = 1 ;
+    static final double     DRIVE_GEAR_REDUCTION    = 1.23 ;
     static final double     WHEEL_DIAMETER_INCHES   = 4.724 ;
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159265);
-    static final double     DRIVE_SPEED             = 0.60;
+    static final double     DRIVE_SPEED             = 0.70;
     static final double     TURN_SPEED              = 0.15;
 
 
@@ -256,6 +256,7 @@ public class AutoTest extends LinearOpMode {
     public void rotate(int degrees, double power)
     {
         double  leftPower, rightPower;
+        degrees += 23;
 
         resetAngle();
 

@@ -34,7 +34,7 @@ public class MainTeleOp extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
-
+        spinner = hardwareMap.get(DcMotor.class, "spinner");
 
         //Set brake.
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -75,36 +75,25 @@ public class MainTeleOp extends LinearOpMode {
 
             if (gamepad1.b) {
 
-                moveDuck(.75);
+                spinner.setPower(0.7);
 
+            } else if (!gamepad1.b) {
+
+                spinner.setPower(0);
+
+            }
+
+            if (gamepad1.x) {
+
+                spinner.setPower(-0.7);
+
+            } else if (!gamepad1.x) {
+
+                spinner.setPower(0);
 
             }
 
         }
 
     }
-
-    public void moveDuck(double power) {
-
-        int target;
-
-        if (opModeIsActive()) {
-
-            target = spinner.getCurrentPosition() + (int) (5.25 * COUNTS_PER_INCH);
-
-            spinner.setTargetPosition(target);
-
-            spinner.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            runtime.reset();
-
-            spinner.setPower(Math.abs(power));
-
-            spinner.setPower(0);
-
-            spinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-
-    }
-
 }

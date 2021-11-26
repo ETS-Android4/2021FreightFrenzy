@@ -19,9 +19,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
-@Autonomous(name = "AutoTest")
+@Autonomous(name = "AutoIMUEncoder")
 
-public class AutoTest extends LinearOpMode {
+public class MainAutonomous extends LinearOpMode {
 
     public DcMotor frontLeft;
     public DcMotor frontRight;

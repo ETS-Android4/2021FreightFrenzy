@@ -16,8 +16,8 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor backLeft;
     private DcMotor backRight;
     private DcMotor spinner;
-    private DcMotor freightArm;
-    private Servo freightHand;
+
+    private FreightArmSystem f = new FreightArmSystem(hardwareMap, "arm", "hand", 180.0, 0.0);
 
     private ElapsedTime runtime = new ElapsedTime();
     private Object FreightArm;
@@ -32,7 +32,6 @@ public class MainTeleOp extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         spinner = hardwareMap.get(DcMotor.class, "spinner");
-
 
 
         //Set brake.
@@ -72,6 +71,7 @@ public class MainTeleOp extends LinearOpMode {
             frontRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
             backRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
 
+            //spinner
             if (gamepad1.b) {
 
                 spinner.setPower(0.7);
@@ -92,14 +92,14 @@ public class MainTeleOp extends LinearOpMode {
 
             }
 
-            if(gamepad1.y) {
-                if (frontLeft.getDirection() == DcMotorSimple.Direction.REVERSE) {
+            //reverse
+            if (gamepad1.y) {
+                if (frontLeft.getDirection() == DcMotor.Direction.REVERSE) {
                     frontLeft.setDirection(DcMotor.Direction.FORWARD);
                     backLeft.setDirection(DcMotor.Direction.FORWARD);
                     frontRight.setDirection(DcMotor.Direction.REVERSE);
                     backRight.setDirection(DcMotor.Direction.REVERSE);
-                }
-                else if(frontLeft.getDirection() == DcMotorSimple.Direction.FORWARD) {
+                } else if (frontLeft.getDirection() == DcMotor.Direction.FORWARD) {
                     frontLeft.setDirection(DcMotor.Direction.REVERSE);
                     backLeft.setDirection(DcMotor.Direction.REVERSE);
                     frontRight.setDirection(DcMotor.Direction.FORWARD);
@@ -107,6 +107,30 @@ public class MainTeleOp extends LinearOpMode {
                 }
             }
 
+            //arm
+
+            //arm up
+            if (gamepad1.dpad_up) {
+
+                f.setFreightArmPosition(FreightArmSystem.ArmPosition.UP, 0.7);
+
+            } else if (gamepad1.dpad_down) {
+
+                f.setFreightArmPosition(FreightArmSystem.ArmPosition.DOWN, 0.7);
+
+            }
+
+            //claw
+
+            if (gamepad1.dpad_left) {
+
+                f.setFreightHandPosition(FreightArmSystem.HandPosition.OPEN);
+
+            } else if (gamepad1.dpad_right) {
+
+                f.setFreightHandPosition(FreightArmSystem.HandPosition.CLOSED);
+
+            }
 
         }
 

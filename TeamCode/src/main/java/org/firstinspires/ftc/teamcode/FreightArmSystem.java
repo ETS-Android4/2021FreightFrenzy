@@ -29,7 +29,7 @@ public class FreightArmSystem {
 
     private HandPosition currentHandPosition;
 
-    public FreightArmSystem(HardwareMap hardwareMap, String armName, String handName, String liftButton, String lowerButton, double openP, double closeP) {
+    public FreightArmSystem(HardwareMap hardwareMap, String armName, String handName, double openP, double closeP) {
         freightArm = hardwareMap.dcMotor.get(armName);
         freightHand = hardwareMap.servo.get(handName);
         this.openClawPosition = openP;

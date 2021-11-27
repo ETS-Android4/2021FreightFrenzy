@@ -21,12 +21,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Autonomous(name = "AutoIMUEncoder")
 
-public class MainAutonomous extends LinearOpMode {
+public class AutoTest extends LinearOpMode {
 
     public DcMotor frontLeft;
     public DcMotor frontRight;
     public DcMotor backLeft;
     public DcMotor backRight;
+    public DcMotor spinner;
 
     BNO055IMU imu;
     Orientation             lastAngles = new Orientation();
@@ -43,7 +44,8 @@ public class MainAutonomous extends LinearOpMode {
     static final double     DRIVE_SPEED             = 0.70;
     static final double     TURN_SPEED              = 0.15;
 
-
+    static final double     TICKS_PER_SPINNER_REV   = 1120;
+    static final double     SPIN_GEAR_REDUCTION     =
 
     @Override
 
@@ -66,6 +68,7 @@ public class MainAutonomous extends LinearOpMode {
         frontRight = hardwareMap.dcMotor.get("frontRight");
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
+        spinner = hardwareMap.dcMotor.get("spinner");
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -74,7 +77,7 @@ public class MainAutonomous extends LinearOpMode {
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         //The IMU does not initialize instantly. This makes it so the driver can see when they can push Play without errors.
         telemetry.addData("Mode", "calibrating...");
@@ -94,11 +97,13 @@ public class MainAutonomous extends LinearOpMode {
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        spinner.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        spinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         telemetry.addData("Path0",  "Starting at %7d :%7d",
                 frontLeft.getCurrentPosition(),
@@ -314,6 +319,7 @@ public class MainAutonomous extends LinearOpMode {
 
 
     //spinner use
+
 
 
 }

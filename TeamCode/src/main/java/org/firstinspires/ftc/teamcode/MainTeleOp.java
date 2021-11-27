@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -15,15 +16,13 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor backLeft;
     private DcMotor backRight;
     private DcMotor spinner;
-
-    static final double COUNTS_PER_MOTOR_REV = 1120;
-    static final double DRIVE_GEAR_REDUCTION = 1.23;
-    static final double WHEEL_DIAMETER_INCHES = 5.75;
-    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
-
+    private DcMotor freightArm;
+    private Servo freightHand;
 
     private ElapsedTime runtime = new ElapsedTime();
+    private Object FreightArm;
+
+
 
 
     @Override
@@ -35,6 +34,8 @@ public class MainTeleOp extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         spinner = hardwareMap.get(DcMotor.class, "spinner");
+
+
 
         //Set brake.
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -92,6 +93,22 @@ public class MainTeleOp extends LinearOpMode {
                 spinner.setPower(0);
 
             }
+
+            if(gamepad1.y) {
+                if (frontLeft.getDirection() == DcMotorSimple.Direction.REVERSE) {
+                    frontLeft.setDirection(DcMotor.Direction.FORWARD);
+                    backLeft.setDirection(DcMotor.Direction.FORWARD);
+                    frontRight.setDirection(DcMotor.Direction.REVERSE);
+                    backRight.setDirection(DcMotor.Direction.REVERSE);
+                }
+                else if(frontLeft.getDirection() == DcMotorSimple.Direction.FORWARD) {
+                    frontLeft.setDirection(DcMotor.Direction.REVERSE);
+                    backLeft.setDirection(DcMotor.Direction.REVERSE);
+                    frontRight.setDirection(DcMotor.Direction.FORWARD);
+                    backRight.setDirection(DcMotor.Direction.FORWARD);
+                }
+            }
+
 
         }
 

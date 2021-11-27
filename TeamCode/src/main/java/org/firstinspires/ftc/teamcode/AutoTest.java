@@ -45,7 +45,7 @@ public class AutoTest extends LinearOpMode {
     static final double     TURN_SPEED              = 0.15;
 
     static final double     TICKS_PER_SPINNER_REV   = 1120;
-    static final double     SPIN_GEAR_REDUCTION     =
+    static final double     SPIN_GEAR_REDUCTION     = 1.23;
 
     @Override
 

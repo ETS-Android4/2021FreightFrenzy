@@ -23,8 +23,6 @@ public class MainTeleOp extends LinearOpMode {
     private Object FreightArm;
 
 
-
-
     @Override
     public void runOpMode() throws InterruptedException {
 

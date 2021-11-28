@@ -16,11 +16,10 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor backLeft;
     private DcMotor backRight;
     private DcMotor spinner;
+    private DcMotor arm;
+    private Servo hand;
 
-    private FreightArmSystem f = new FreightArmSystem(hardwareMap, "arm", "hand", 180.0, 0.0);
-
-    private ElapsedTime runtime = new ElapsedTime();
-    private Object FreightArm;
+    //private FreightArmSystem f = new FreightArmSystem(hardwareMap, "arm", "hand", 180.0, 0.0);
 
 
     @Override
@@ -32,6 +31,8 @@ public class MainTeleOp extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         spinner = hardwareMap.get(DcMotor.class, "spinner");
+        arm = hardwareMap.get(DcMotor.class, "arm");
+        hand = hardwareMap.get(Servo.class, "hand");
 
 
         //Set brake.
@@ -44,6 +45,7 @@ public class MainTeleOp extends LinearOpMode {
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
+        arm.setDirection(DcMotor.Direction.REVERSE);
 
         // encoder use
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -55,7 +57,6 @@ public class MainTeleOp extends LinearOpMode {
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
 
         double minPower = -.7;
         double maxPower = .7;
@@ -112,23 +113,33 @@ public class MainTeleOp extends LinearOpMode {
             //arm up
             if (gamepad1.dpad_up) {
 
-                f.setFreightArmPosition(FreightArmSystem.ArmPosition.UP, 0.7);
+                arm.setPower(-0.55);
 
-            } else if (gamepad1.dpad_down) {
+            } else if (!gamepad1.dpad_up) {
 
-                f.setFreightArmPosition(FreightArmSystem.ArmPosition.DOWN, 0.7);
+                arm.setPower(0);
+
+            }
+
+            if (gamepad1.dpad_down) {
+
+                arm.setPower(0.55);
+
+            } else if (!gamepad1.dpad_down) {
+
+                arm.setPower(0);
 
             }
 
             //claw
 
-            if (gamepad1.dpad_left) {
+            if (gamepad1.left_bumper) {
 
-                f.setFreightHandPosition(FreightArmSystem.HandPosition.OPEN);
+              hand.setPosition(0.25);
 
-            } else if (gamepad1.dpad_right) {
+            } else if (gamepad1.right_bumper) {
 
-                f.setFreightHandPosition(FreightArmSystem.HandPosition.CLOSED);
+                hand.setPosition(.4);
 
             }
 

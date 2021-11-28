@@ -125,6 +125,8 @@ public class BlueRightAuto extends LinearOpMode {
         rotate(-90, 0.7);
 
 
+
+
         telemetry.addData("Path", "Complete");
         telemetry.update();
 

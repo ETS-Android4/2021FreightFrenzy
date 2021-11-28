@@ -108,6 +108,13 @@ public class RedRightAuto extends LinearOpMode {
 
         //actual code under
 
+        //go for parking
+        encoderDrive(0.7, 6, 6, 2);
+        rotate(90, 0.5);
+        encoderDrive(0.7, 30,30,3);
+        rotate(-90, 0.5);
+        encoderDrive(0.7, 12, 12, 3);
+        rotate(-90, 0.5);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

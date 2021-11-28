@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 public class AutonomousConstants {
 
-    static final double COUNTS_PER_MOTOR_REV = 537.6;
+    static double COUNTS_PER_MOTOR_REV = 537.6;
     static final double DRIVE_GEAR_REDUCTION = 1.23;
     static final double WHEEL_DIAMETER_INCHES = 4.724;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /

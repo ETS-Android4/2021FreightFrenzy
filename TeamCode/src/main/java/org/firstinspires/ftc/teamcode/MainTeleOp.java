@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -126,6 +127,22 @@ public class MainTeleOp extends LinearOpMode {
 
             }
 
+            //flip flop
+            if (gamepad1.y) {
+
+                frontLeft.setDirection(DcMotor.Direction.FORWARD);
+                backLeft.setDirection(DcMotor.Direction.FORWARD);
+                frontRight.setDirection(DcMotor.Direction.REVERSE);
+                backRight.setDirection(DcMotor.Direction.REVERSE);
+
+            } else if (gamepad1.a) {
+
+                frontLeft.setDirection(DcMotor.Direction.REVERSE);
+                backLeft.setDirection(DcMotor.Direction.REVERSE);
+                frontRight.setDirection(DcMotor.Direction.FORWARD);
+                backRight.setDirection(DcMotor.Direction.FORWARD);
+
+            }
         }
 
     }

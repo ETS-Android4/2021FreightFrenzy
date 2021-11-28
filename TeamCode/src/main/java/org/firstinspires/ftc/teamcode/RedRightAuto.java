@@ -111,10 +111,15 @@ public class RedRightAuto extends LinearOpMode {
         //go for parking
         encoderDrive(0.7, 6, 6, 2);
         rotate(90, 0.5);
-        encoderDrive(0.7, 30,30,3);
-        rotate(-90, 0.5);
-        encoderDrive(0.7, 12, 12, 3);
-        rotate(-90, 0.5);
+        encoderDrive(0.7, 30, 30, 3);
+        rotate(45, 0.5);
+
+        moveDuck(0.7);
+
+        rotate(90, 0.5);
+        encoderDrive(0.7, 96,96, 5);
+
+        rotate(90, 0.5);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -260,4 +265,29 @@ public class RedRightAuto extends LinearOpMode {
 
         globalAngle = 0;
     }
+
+
+    public void moveDuck(double power) {
+
+        int target;
+
+        if (opModeIsActive()) {
+
+            target = spinner.getCurrentPosition() + (int) (5.25 * COUNTS_PER_INCH);
+
+            spinner.setTargetPosition(target);
+
+            spinner.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            runtime.reset();
+
+            spinner.setPower(Math.abs(power));
+
+            spinner.setPower(0);
+
+            spinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
+    }
+
 }

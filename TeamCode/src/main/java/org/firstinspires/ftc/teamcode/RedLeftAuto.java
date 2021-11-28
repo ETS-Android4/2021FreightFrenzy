@@ -110,11 +110,13 @@ public class RedLeftAuto extends LinearOpMode {
         encoderDrive(0.7, 12, 12, 0.5);
         rotate(-90, 0.7);
         encoderDrive(0.7, 12, 12, 0.5);
-        rotate(-45,0.7);
+        rotate(-45, 0.7);
 
         //duck
+        moveDuck(0.7);
         rotate(-90, 0.7);
         encoderDrive(0.7, 120, 120, 0.7);
+        rotate(90, 0.7);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -259,5 +261,28 @@ public class RedLeftAuto extends LinearOpMode {
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         globalAngle = 0;
+    }
+
+    public void moveDuck(double power) {
+
+        int target;
+
+        if (opModeIsActive()) {
+
+            target = spinner.getCurrentPosition() + (int) (5.25 * COUNTS_PER_INCH);
+
+            spinner.setTargetPosition(target);
+
+            spinner.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            runtime.reset();
+
+            spinner.setPower(Math.abs(power));
+
+            spinner.setPower(0);
+
+            spinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
     }
 }

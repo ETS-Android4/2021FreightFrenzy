@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public class BlueRightAuto extends LinearOpMode {
+public class RedRightAutoPark extends LinearOpMode {
 
     public DcMotor frontLeft;
     public DcMotor frontRight;
@@ -107,24 +107,12 @@ public class BlueRightAuto extends LinearOpMode {
         waitForStart();
 
         //actual code under
-        encoderDrive(0.7, 12, 12, 5.0);
+
+        //go for parking
+        encoderDrive(0.7, 6, 6, 2);
         rotate(-90, 0.7);
-
-        encoderDrive(0.7, 12, 12, 5.0);
-        rotate(-45, 0.7);
-
-        //duck
-        moveDuck(0.7);
-
-        rotate(-90, 0.7);
-        encoderDrive(0.7, 84, 84, 5.0);
-
-        rotate(-90, 0.7);
-        encoderDrive(0.7, 12, 12, 5.0);
+        encoderDrive(0.7, 24, 24, 2);
         rotate(90, 0.7);
-        encoderDrive(0.7, 12, 12, 5.0);
-        rotate(-90, 0.7);
-
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -271,6 +259,7 @@ public class BlueRightAuto extends LinearOpMode {
         globalAngle = 0;
     }
 
+
     public void moveDuck(double power) {
 
         int target;
@@ -293,4 +282,5 @@ public class BlueRightAuto extends LinearOpMode {
         }
 
     }
+
 }

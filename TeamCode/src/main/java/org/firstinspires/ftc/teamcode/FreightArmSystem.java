@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@Disabled
 public class FreightArmSystem {
 
     static final double COUNTS_PER_MOTOR_REV = 1120;
@@ -29,7 +31,7 @@ public class FreightArmSystem {
 
     private HandPosition currentHandPosition;
 
-    public FreightArmSystem(HardwareMap hardwareMap, String armName, String handName, String liftButton, String lowerButton, double openP, double closeP) {
+    public FreightArmSystem(HardwareMap hardwareMap, String armName, String handName, double openP, double closeP) {
         freightArm = hardwareMap.dcMotor.get(armName);
         freightHand = hardwareMap.servo.get(handName);
         this.openClawPosition = openP;

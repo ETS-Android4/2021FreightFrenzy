@@ -107,6 +107,22 @@ public class BlueRightAuto extends LinearOpMode {
         waitForStart();
 
         //actual code under
+        encoderDrive(0.7, 12, 12, 5.0);
+        rotate(-90, 0.7);
+
+        encoderDrive(0.7, 12, 12, 5.0);
+        rotate(-45, 0.7);
+
+        //duck
+
+        rotate(-90, 0.7);
+        encoderDrive(0.7, 84, 84, 5.0);
+
+        rotate(-90, 0.7);
+        encoderDrive(0.7, 12, 12, 5.0);
+        rotate(90, 0.7);
+        encoderDrive(0.7, 12, 12, 5.0);
+        rotate(-90, 0.7);
 
 
         telemetry.addData("Path", "Complete");

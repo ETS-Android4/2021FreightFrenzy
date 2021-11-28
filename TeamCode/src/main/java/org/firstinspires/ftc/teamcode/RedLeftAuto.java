@@ -107,7 +107,14 @@ public class RedLeftAuto extends LinearOpMode {
         waitForStart();
 
         //actual code under
+        encoderDrive(0.7, 12, 12, 0.5);
+        rotate(90, 0.7);
+        encoderDrive(0.7, 12, 12, 0.5);
+        rotate(45,0.7);
 
+        //duck
+        rotate(90, 0.7);
+        encoderDrive(0.7, 120, 120, 0.7);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

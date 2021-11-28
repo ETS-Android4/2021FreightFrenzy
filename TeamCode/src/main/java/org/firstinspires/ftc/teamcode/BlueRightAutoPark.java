@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public class BlueLeftAuto extends LinearOpMode {
+public class BlueRightAutoPark extends LinearOpMode {
 
     public DcMotor frontLeft;
     public DcMotor frontRight;
@@ -108,14 +108,15 @@ public class BlueLeftAuto extends LinearOpMode {
 
         //actual code under
         encoderDrive(0.7, 12, 12, 5.0);
-        rotate(-90, 0.7);
+        rotate(90, 0.7);
 
-        encoderDrive(0.7, 48, 48, 5.0);
+        encoderDrive(0.7, 12, 12, 5.0);
         rotate(-45, 0.7);
-        //duck
-        rotate(-90, 0.7);
 
-        encoderDrive(0.7, 84, 84, 5.0);
+        //duck
+
+        rotate(-90, 0.7);
+        encoderDrive(0.7, 60, 60, 5.0);
 
         rotate(-90, 0.7);
         encoderDrive(0.7, 12, 12, 5.0);

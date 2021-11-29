@@ -18,9 +18,6 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor arm;
     private Servo hand;
 
-    //private FreightArmSystem f = new FreightArmSystem(hardwareMap, "arm", "hand", 180.0, 0.0);
-
-
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -74,7 +71,7 @@ public class MainTeleOp extends LinearOpMode {
             //spinner
             if (gamepad1.b) {
 
-                spinner.setPower(0.7);
+                spinner.setPower(1);
 
             } else if (!gamepad1.b) {
 
@@ -84,7 +81,7 @@ public class MainTeleOp extends LinearOpMode {
 
             if (gamepad1.x) {
 
-                spinner.setPower(-0.7);
+                spinner.setPower(-1);
 
             } else if (!gamepad1.x) {
 
@@ -119,21 +116,22 @@ public class MainTeleOp extends LinearOpMode {
 
             if (gamepad1.left_bumper) {
 
-              hand.setPosition(0.25);
+                hand.setPosition(0.25);
 
             } else if (gamepad1.right_bumper) {
 
-                hand.setPosition(.4);
+                hand.setPosition(.45);
 
             }
 
             //flip flop
+
             if (gamepad1.y) {
 
                 frontLeft.setDirection(DcMotor.Direction.FORWARD);
                 backLeft.setDirection(DcMotor.Direction.FORWARD);
-                frontRight.setDirection(DcMotor.Direction.REVERSE);
                 backRight.setDirection(DcMotor.Direction.REVERSE);
+                frontRight.setDirection(DcMotor.Direction.REVERSE);
 
             } else if (gamepad1.a) {
 
@@ -142,7 +140,11 @@ public class MainTeleOp extends LinearOpMode {
                 frontRight.setDirection(DcMotor.Direction.FORWARD);
                 backRight.setDirection(DcMotor.Direction.FORWARD);
 
+
             }
+
+
+
         }
 
     }

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+@Autonomous(name = "BlueRightAutoPark")
 public class BlueRightAutoPark extends LinearOpMode {
 
     public DcMotor frontLeft;
@@ -107,23 +109,9 @@ public class BlueRightAutoPark extends LinearOpMode {
         waitForStart();
 
         //actual code under
-        encoderDrive(0.7, 12, 12, 5.0);
-        rotate(90, 0.7);
-
-        encoderDrive(0.7, 12, 12, 5.0);
-        rotate(-45, 0.7);
-
-        //duck
-
-        rotate(-90, 0.7);
-        encoderDrive(0.7, 60, 60, 5.0);
-
-        rotate(-90, 0.7);
-        encoderDrive(0.7, 12, 12, 5.0);
-        rotate(90, 0.7);
-        encoderDrive(0.7, 12, 12, 5.0);
-        rotate(-90, 0.7);
-
+        encoderDrive(0.7, 30, 30, 2);
+        rotate(-90, 0.5);
+        encoderDrive(0.7, 36, 36, 2);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -217,7 +205,15 @@ public class BlueRightAutoPark extends LinearOpMode {
     //The method turns the robot by a specific angle, -180 to +180.
     public void rotate(int degrees, double power) {
         double leftPower, rightPower;
-        degrees += 23;
+        if (degrees > 0) {
+
+            degrees -= 16;
+
+        } else if (degrees < 0) {
+
+            degrees += 16;
+
+        }
 
         resetAngle();
 

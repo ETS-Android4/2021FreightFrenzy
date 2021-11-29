@@ -119,8 +119,8 @@ public class AutoTest extends LinearOpMode {
 
         waitForStart();
 
-        encoderDrive(DRIVE_SPEED,  10,  10, 10.0);
-        //rotate(90, 0.8);
+        encoderDrive(DRIVE_SPEED,  24,  24, 1.0);
+        rotate(-90, 0.5);
         //encoderDrive(DRIVE_SPEED,  -6,  -6, 5.0);
 
 
@@ -260,8 +260,17 @@ public class AutoTest extends LinearOpMode {
     //The method turns the robot by a specific angle, -180 to +180.
     public void rotate(int degrees, double power)
     {
-        double  leftPower, rightPower;
-        degrees += 23;
+        double leftPower, rightPower;
+
+        if (degrees > 0) {
+
+            degrees -= 16;
+
+        } else if (degrees < 0) {
+
+            degrees += 16;
+
+        }
 
         resetAngle();
 

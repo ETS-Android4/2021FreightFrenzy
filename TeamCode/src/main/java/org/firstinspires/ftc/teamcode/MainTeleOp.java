@@ -71,7 +71,7 @@ public class MainTeleOp extends LinearOpMode {
             //spinner
             if (gamepad1.b) {
 
-                spinner.setPower(1);
+                spinner.setPower(.5);
 
             } else if (!gamepad1.b) {
 
@@ -133,12 +133,26 @@ public class MainTeleOp extends LinearOpMode {
                 backRight.setDirection(DcMotor.Direction.REVERSE);
                 frontRight.setDirection(DcMotor.Direction.REVERSE);
 
+                frontLeft.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
+                backLeft.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
+
+                frontRight.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
+                backRight.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
+
+
+
             } else if (gamepad1.a) {
 
                 frontLeft.setDirection(DcMotor.Direction.REVERSE);
                 backLeft.setDirection(DcMotor.Direction.REVERSE);
                 frontRight.setDirection(DcMotor.Direction.FORWARD);
                 backRight.setDirection(DcMotor.Direction.FORWARD);
+
+                frontLeft.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
+                backLeft.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
+
+                frontRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
+                backRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
 
 
             }

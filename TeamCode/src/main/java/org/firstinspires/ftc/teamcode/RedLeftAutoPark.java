@@ -265,4 +265,27 @@ public class RedLeftAutoPark extends LinearOpMode {
 
         globalAngle = 0;
     }
+
+    public void moveDuck(double power) {
+
+        int target;
+
+        if (opModeIsActive()) {
+
+            target = spinner.getCurrentPosition() + (int) (5.25 * COUNTS_PER_INCH);
+
+            spinner.setTargetPosition(target);
+
+            spinner.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            runtime.reset();
+
+            spinner.setPower(Math.abs(power));
+
+            spinner.setPower(0);
+
+            spinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
+    }
 }

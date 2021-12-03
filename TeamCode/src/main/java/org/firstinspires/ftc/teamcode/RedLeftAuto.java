@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -13,7 +12,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Disabled
 @Autonomous(name = "RedLeftAuto")
 public class RedLeftAuto extends LinearOpMode {
 
@@ -111,16 +109,17 @@ public class RedLeftAuto extends LinearOpMode {
         waitForStart();
 
         //actual code under
-        encoderDrive(0.7, 12, 12, 0.5);
-        rotate(-90, 0.5);
-        encoderDrive(0.7, 12, 12, 0.5);
-        rotate(-45, 0.5);
+        encoderDrive(0.7, 21, 21, 1);
+        rotate(85, .5);
+        encoderDrive(0.7, 31, 31, 1);
+        rotate(85, .5);
+        encoderDrive(0.7, 14, 14, 1);
+        sleep(1000);
+        encoderDrive(0.2, 2, 2, 1);
 
-        //duck
-        moveDuck(0.7);
-        rotate(-90, 0.7);
-        encoderDrive(0.7, 120, 120, 0.7);
-        rotate(90, 0.7);
+        duckByTime(-.55, 5000);
+
+        encoderDrive(0.7, -19.5,-19.5, 1);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -296,5 +295,14 @@ public class RedLeftAuto extends LinearOpMode {
             spinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
+    }
+
+    public void duckByTime(double power, long time) {
+
+        spinner.setPower(power);
+
+        sleep(time);
+
+        spinner.setPower(0);
     }
 }

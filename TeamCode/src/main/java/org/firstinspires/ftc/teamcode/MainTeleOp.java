@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -71,7 +70,7 @@ public class MainTeleOp extends LinearOpMode {
             //spinner
             if (gamepad1.b) {
 
-                spinner.setPower(.5);
+                spinner.setPower(1.0);
 
             } else if (!gamepad1.b) {
 
@@ -81,7 +80,7 @@ public class MainTeleOp extends LinearOpMode {
 
             if (gamepad1.x) {
 
-                spinner.setPower(-1);
+                spinner.setPower(-1.0);
 
             } else if (!gamepad1.x) {
 

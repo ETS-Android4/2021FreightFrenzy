@@ -109,23 +109,34 @@ public class BlueRightAuto extends LinearOpMode {
         waitForStart();
 
         //actual code under
-        encoderDrive(0.7, 12, 12, 5.0);
-        rotate(-90, 0.5);
+        encoderDrive(0.7, 14.5, 14.5, 2.0);
+        sleep(1000);
+        rotate(-99, 0.5);
 
-        encoderDrive(0.7, 12, 12, 5.0);
-        rotate(-45, 0.5);
+        encoderDrive(0.7, 25, 25, 2.0);
+
+        sleep(1000);
+        encoderDrive(0.25, 5, 5, 2.0);
 
         //duck
-        moveDuck(0.7);
+        duckByTime(0.55, 5000);
+        encoderDrive(0.7, -5, -5, 1);
+        rotate(85, 0.5);
+        encoderDrive(0.7, 25, 25, 1);
 
-        rotate(-90, 0.5);
-        encoderDrive(0.7, 84, 84, 5.0);
+        //move to park in shipping hub
+        //encoderDrive(0.7, 24, 24, 2.0);
+        //rotate(45, 0.5);
+        //encoderDrive(0.7, 12, 12, 2.0);
 
-        rotate(-90, 0.5);
-        encoderDrive(0.7, 12, 12, 5.0);
-        rotate(90, 0.5);
-        encoderDrive(0.7, 12, 12, 5.0);
-        rotate(-90, 0.5);
+       // rotate(-90, 0.5);
+        //encoderDrive(0.7, 84, 84, 5.0);
+
+        //rotate(-90, 0.5);
+        //encoderDrive(0.7, 12, 12, 5.0);
+        //rotate(90, 0.5);
+        //encoderDrive(0.7, 12, 12, 5.0);
+        //rotate(-90, 0.5);
 
 
         telemetry.addData("Path", "Complete");
@@ -303,4 +314,15 @@ public class BlueRightAuto extends LinearOpMode {
         }
 
     }
+
+    public void duckByTime (double power, long time){
+
+        spinner.setPower(power);
+
+        sleep(time);
+
+        spinner.setPower(0);
+    }
+
+
 }

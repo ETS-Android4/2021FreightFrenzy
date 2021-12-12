@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
 public class MainTeleOp extends LinearOpMode {
 
     private DcMotor frontLeft;
-    private DcMotor frontRight;
+            private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
     private DcMotor spinner;

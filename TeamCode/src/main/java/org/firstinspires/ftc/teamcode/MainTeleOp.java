@@ -143,7 +143,6 @@ public class MainTeleOp extends LinearOpMode {
                 backRight.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
 
 
-
             } else if (gamepad1.a) {
 
                 frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -160,17 +159,22 @@ public class MainTeleOp extends LinearOpMode {
 
             }
 
+            if (gamepad2.dpad_up) {
+
+                dSlideR.setPower(0.3);
+
+            } else if (gamepad2.dpad_down) {
+
+                dSlideR.setPower(-0.3);
+
+            } else {
+
+                dSlideR.setPower(0);
+
+            }
 
 
         }
-
-        if (gamepad2.a) {
-
-            dSlideR.setPower(-0.2);
-            telemetry.addData("Motor position:", dSlideR.getCurrentPosition());
-
-        }
-
 
     }
 }

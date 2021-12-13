@@ -17,6 +17,8 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor arm;
     private Servo hand;
 
+    private Servo horizontal;
+
     private DcMotor dSlideR;
 
 
@@ -33,6 +35,8 @@ public class MainTeleOp extends LinearOpMode {
         hand = hardwareMap.get(Servo.class, "hand");
 
         dSlideR = hardwareMap.get(DcMotor.class, "dSlideR");
+
+        horizontal = hardwareMap.get(Servo.class, "horizontal");
 
         //Set brake.
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -173,6 +177,18 @@ public class MainTeleOp extends LinearOpMode {
 
             }
 
+            //Horizontal Extension
+
+            //expand
+            if (gamepad2.b) {
+
+                horizontal.setPosition(0.17);
+            //compress
+            } else if (gamepad2.x) {
+
+                horizontal.setPosition(0.40);
+
+            }
 
         }
 

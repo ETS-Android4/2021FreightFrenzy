@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous(name = "AutoTest")
+@Autonomous(name = "AutoTest", group = "Test")
 public class AutoTest extends LinearOpMode {
 
     public DcMotor frontLeft;
@@ -69,6 +69,9 @@ public class AutoTest extends LinearOpMode {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+
 
         //The IMU does not initialize instantly. This makes it so the driver can see when they can push Play without errors.
         telemetry.addData("Mode", "calibrating...");

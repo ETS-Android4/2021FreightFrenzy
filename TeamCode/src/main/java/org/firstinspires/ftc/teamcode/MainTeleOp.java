@@ -17,6 +17,8 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor arm;
     private Servo hand;
 
+    private DcMotor drawerSlide;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -157,6 +159,14 @@ public class MainTeleOp extends LinearOpMode {
             }
 
 
+
+        }
+
+        while (gamepad2.a) {
+
+            drawerSlide.setPower(-0.5);
+            sleep(2000);
+            telemetry.addData("Motor position:", drawerSlide.getCurrentPosition());
 
         }
 

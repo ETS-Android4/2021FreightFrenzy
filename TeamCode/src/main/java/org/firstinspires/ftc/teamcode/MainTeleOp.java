@@ -10,14 +10,15 @@ import com.qualcomm.robotcore.util.Range;
 public class MainTeleOp extends LinearOpMode {
 
     private DcMotor frontLeft;
-            private DcMotor frontRight;
+    private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
     private DcMotor spinner;
     private DcMotor arm;
     private Servo hand;
 
-    private DcMotor drawerSlide;
+    private DcMotor dSlideR;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -31,6 +32,7 @@ public class MainTeleOp extends LinearOpMode {
         arm = hardwareMap.get(DcMotor.class, "arm");
         hand = hardwareMap.get(Servo.class, "hand");
 
+        dSlideR = hardwareMap.get(DcMotor.class, "dSlideR");
 
         //Set brake.
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -162,13 +164,13 @@ public class MainTeleOp extends LinearOpMode {
 
         }
 
-        while (gamepad2.a) {
+        if (gamepad2.a) {
 
-            drawerSlide.setPower(-0.5);
-            sleep(2000);
-            telemetry.addData("Motor position:", drawerSlide.getCurrentPosition());
+            dSlideR.setPower(-0.2);
+            telemetry.addData("Motor position:", dSlideR.getCurrentPosition());
 
         }
+
 
     }
 }

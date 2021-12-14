@@ -21,7 +21,6 @@ public class MainTeleOp extends LinearOpMode {
 
     private DcMotor dSlideR;
 
-
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -165,15 +164,11 @@ public class MainTeleOp extends LinearOpMode {
 
             if (gamepad2.dpad_up) {
 
-                dSlideR.setPower(0.3);
+                drawerSlideUp();
 
             } else if (gamepad2.dpad_down) {
 
-                dSlideR.setPower(-0.3);
-
-            } else {
-
-                dSlideR.setPower(0);
+                drawerSliderDown();
 
             }
 
@@ -183,7 +178,7 @@ public class MainTeleOp extends LinearOpMode {
             if (gamepad2.b) {
 
                 horizontal.setPosition(0.17);
-            //compress
+                //compress
             } else if (gamepad2.x) {
 
                 horizontal.setPosition(0.40);
@@ -193,4 +188,54 @@ public class MainTeleOp extends LinearOpMode {
         }
 
     }
+
+    public void drawerSlideUp() {
+
+        dSlideR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dSlideR.setTargetPosition(200);
+        dSlideR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        sleep(1000);
+
+        dSlideR.setPower(0.3);
+
+        while (opModeIsActive() && dSlideR.isBusy()) {
+
+            telemetry.addData("drawer slide right", dSlideR.getCurrentPosition() + " busy =" + dSlideR.isBusy());
+            telemetry.update();
+            idle();
+
+        }
+
+        dSlideR.setPower(0);
+
+        resetStartTime();
+
+    }
+
+    public void drawerSliderDown() {
+
+        dSlideR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dSlideR.setTargetPosition(-200);
+        dSlideR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        sleep(1000);
+
+        dSlideR.setPower(0.3);
+
+        while (opModeIsActive() && dSlideR.isBusy()) {
+
+            telemetry.addData("drawer slide right", dSlideR.getCurrentPosition() + " busy =" + dSlideR.isBusy());
+            telemetry.update();
+            idle();
+
+        }
+
+        dSlideR.setPower(0);
+
+        resetStartTime();
+
+    }
+
+
 }

@@ -20,6 +20,8 @@ public class AutoTest extends LinearOpMode {
     public DcMotor backLeft;
     public DcMotor backRight;
     public DcMotor spinner;
+    public DcMotor dSlideR;
+    public DcMotor dSlideL;
 
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
@@ -39,6 +41,10 @@ public class AutoTest extends LinearOpMode {
     static final double TICKS_PER_SPINNER_REV = 1120;
     static final double SPIN_GEAR_REDUCTION = 1;
 
+    //instance for vertical lift
+    static final double TURN_WHEEL_DIAMETER_INCHES = 2.50;
+    static final double ROTATION_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (TURN_WHEEL_DIAMETER_INCHES * 3.14159265);
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -52,6 +58,9 @@ public class AutoTest extends LinearOpMode {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
+        BarcodeUtil detector = new BarcodeUtil( hardwareMap, "webcam", telemetry );
+        detector.init();
+
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
@@ -60,6 +69,9 @@ public class AutoTest extends LinearOpMode {
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
         spinner = hardwareMap.dcMotor.get("spinner");
+        dSlideR = hardwareMap.dcMotor.get("dSlideR");
+        dSlideL = hardwareMap.dcMotor.get("dSlideL");
+
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -71,8 +83,6 @@ public class AutoTest extends LinearOpMode {
         spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-
-
         //The IMU does not initialize instantly. This makes it so the driver can see when they can push Play without errors.
         telemetry.addData("Mode", "calibrating...");
         telemetry.update();
@@ -80,7 +90,6 @@ public class AutoTest extends LinearOpMode {
             sleep(50);
             idle();
         }
-
 
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
@@ -90,12 +99,17 @@ public class AutoTest extends LinearOpMode {
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         spinner.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dSlideR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        dSlideL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         spinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        dSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        dSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         telemetry.addData("Path0", "Starting at %7d :%7d",
                 frontLeft.getCurrentPosition(),
@@ -109,20 +123,16 @@ public class AutoTest extends LinearOpMode {
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
 
+        telemetry.addLine( "Position: " + detector.getBarcodePosition());
+        telemetry.update();
+
         waitForStart();
 
         //actual code under
-        encoderDrive(0.7, 21, 21, 1);
-        rotate(-85, .5);
-        encoderDrive(0.7, 31, 31, 1);
-        rotate(-85, .5);
-        encoderDrive(0.7, 14, 14, 1);
-        sleep(1000);
-        encoderDrive(0.2, 2, 2, 1);
 
-        duckByTime(.55, 5000);
+        BarcodePositionDetector.BarcodePosition bP = detector.getBarcodePosition();
+        dSliderEncoder(0.4, bP, 0.5);
 
-        encoderDrive(0.7, -19.5,-19.5, 1);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -308,4 +318,64 @@ public class AutoTest extends LinearOpMode {
 
         spinner.setPower(0);
     }
+
+    public void dSliderEncoder(double speed, BarcodePositionDetector.BarcodePosition bP, double timeoutS) {
+        int lNewTarget, rNewTarget;
+        double inches = 0;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            //barcode check command for height
+            if(bP == BarcodePositionDetector.BarcodePosition.LEFT) {
+                inches = 4.0;
+            }
+            else if(bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
+                inches = 15.0;
+            }
+            else if(bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
+                inches = 22.0;
+            }
+
+
+                // Determine new target position, and pass to motor controller
+            lNewTarget = dSlideL.getCurrentPosition() + (int) (inches * ROTATION_PER_INCH);
+            rNewTarget = dSlideR.getCurrentPosition() + (int) (inches * ROTATION_PER_INCH);
+
+            dSlideL.setTargetPosition(lNewTarget);
+            dSlideR.setTargetPosition(rNewTarget);
+
+            // Turn On RUN_TO_POSITION
+            dSlideL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            dSlideR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            dSlideL.setPower(Math.abs(speed));
+            dSlideR.setPower(Math.abs(speed));
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (dSlideR.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Path1", "Running to", lNewTarget, rNewTarget);
+                telemetry.addData("Path2", "Running at");
+                telemetry.update();
+            }
+
+
+            // Stop all motion;
+            dSlideL.setPower(0);
+            dSlideR.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            dSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            dSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+
+
+    }
+
 }

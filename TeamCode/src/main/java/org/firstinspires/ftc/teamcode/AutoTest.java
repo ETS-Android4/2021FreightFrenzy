@@ -58,7 +58,7 @@ public class AutoTest extends LinearOpMode {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
-        BarcodeUtil detector = new BarcodeUtil( hardwareMap, "webcam", telemetry );
+        BarcodeUtil detector = new BarcodeUtil(hardwareMap, "webcam", telemetry);
         detector.init();
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -123,7 +123,7 @@ public class AutoTest extends LinearOpMode {
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
 
-        telemetry.addLine( "Position: " + detector.getBarcodePosition());
+        telemetry.addLine("Position: " + detector.getBarcodePosition());
         telemetry.update();
 
         waitForStart();
@@ -131,6 +131,28 @@ public class AutoTest extends LinearOpMode {
         //actual code under
 
         BarcodePositionDetector.BarcodePosition bP = detector.getBarcodePosition();
+
+
+        switch (bP) {
+
+            case LEFT:
+
+                //code if duck is on left
+
+            case RIGHT:
+
+                //code if duck is on right
+
+            case MIDDLE:
+
+                //code if duck is in middle
+
+            case NOT_FOUND:
+
+                //if duck not foud
+
+        }
+
         dSliderEncoder(0.4, bP, 0.5);
 
 
@@ -327,18 +349,16 @@ public class AutoTest extends LinearOpMode {
         if (opModeIsActive()) {
 
             //barcode check command for height
-            if(bP == BarcodePositionDetector.BarcodePosition.LEFT) {
+            if (bP == BarcodePositionDetector.BarcodePosition.LEFT) {
                 inches = 4.0;
-            }
-            else if(bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
+            } else if (bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
                 inches = 15.0;
-            }
-            else if(bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
+            } else if (bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
                 inches = 22.0;
             }
 
 
-                // Determine new target position, and pass to motor controller
+            // Determine new target position, and pass to motor controller
             lNewTarget = dSlideL.getCurrentPosition() + (int) (inches * ROTATION_PER_INCH);
             rNewTarget = dSlideR.getCurrentPosition() + (int) (inches * ROTATION_PER_INCH);
 

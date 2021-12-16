@@ -108,9 +108,21 @@ public class RedRightAuto extends LinearOpMode {
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
 
+        BarcodeUtil detector = new BarcodeUtil(hardwareMap, "webcam", telemetry);
+        detector.init();
+
+        telemetry.addLine("Image Detection init finished");
+        telemetry.update();
+
+        String position = detector.getBarcodePosition().toString();
+        telemetry.addData("Duck position:", position);
+
         waitForStart();
 
         //actual code under
+
+
+
 
         //go for parking
         encoderDrive(0.7, 6, 6, 2);
@@ -121,7 +133,7 @@ public class RedRightAuto extends LinearOpMode {
         moveDuck(0.7);
 
         rotate(90, 0.5);
-        encoderDrive(0.7, 96,96, 5);
+        encoderDrive(0.7, 96, 96, 5);
 
         rotate(90, 0.5);
 

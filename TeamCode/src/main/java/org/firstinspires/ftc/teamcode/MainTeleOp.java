@@ -29,6 +29,7 @@ public class MainTeleOp extends LinearOpMode {
     private Servo horizontal;
 
     private DcMotor dSlideR;
+    private DcMotor dSlideL;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -43,6 +44,7 @@ public class MainTeleOp extends LinearOpMode {
         hand = hardwareMap.get(Servo.class, "hand");
 
         dSlideR = hardwareMap.get(DcMotor.class, "dSlideR");
+        dSlideL = hardwareMap.get(DcMotor.class, "dSlideL");
 
         horizontal = hardwareMap.get(Servo.class, "horizontal");
 
@@ -206,12 +208,12 @@ public class MainTeleOp extends LinearOpMode {
 
             //Up
             if (gamepad2.dpad_up) {
-                dSliderREncoder(0.4, 10.0, 2);
+                dSliderEncoder(0.4, 5.0, 2);
             }
 
             //down
             if (gamepad1.dpad_down) {
-                dSliderREncoder(0.4, -2.0, 2);
+                dSliderBackEncoder(0.4, 5.0, 2);
             }
 
 
@@ -220,21 +222,25 @@ public class MainTeleOp extends LinearOpMode {
     }
 
 
-    public void dSliderREncoder(double speed, double inches, double timeoutS) {
-        int newTarget;
+    public void dSliderEncoder(double speed, double inches, double timeoutS) {
+        int lNewTarget, rNewTarget;
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newTarget = dSlideR.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
+            lNewTarget = dSlideL.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
+            rNewTarget = dSlideR.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
 
-            dSlideR.setTargetPosition(newTarget);
+            dSlideL.setTargetPosition(lNewTarget);
+            dSlideR.setTargetPosition(rNewTarget);
 
             // Turn On RUN_TO_POSITION
+            dSlideL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             dSlideR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
+            dSlideL.setPower(Math.abs(speed));
             dSlideR.setPower(Math.abs(speed));
 
             while (opModeIsActive() &&
@@ -242,46 +248,48 @@ public class MainTeleOp extends LinearOpMode {
                     (dSlideR.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1", "Running to", newTarget);
-                telemetry.addData("Path2", "Running at",
-                        dSlideR.getCurrentPosition());
+                telemetry.addData("Path1", "Running to", lNewTarget, rNewTarget);
+                telemetry.addData("Path2", "Running at");
                 telemetry.update();
             }
 
 
             // Stop all motion;
+            dSlideL.setPower(0);
             dSlideR.setPower(0);
 
             // Turn off RUN_TO_POSITION
+            dSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             dSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
 
 
+
     }
 
-    public void dSliderLEncoder(double speed, double inches, double timeoutS) {
-
-        int newTarget;
+    public void dSliderBackEncoder(double speed, double inches, double timeoutS) {
+        int lNewTarget, rNewTarget;
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
-            if (inches < 0) {
-
-                dSlideR.setDirection(DcMotor.Direction.REVERSE);
-
-            }
+            dSlideL.setDirection(DcMotor.Direction.REVERSE);
+            dSlideR.setDirection(DcMotor.Direction.REVERSE);
 
             // Determine new target position, and pass to motor controller
-            newTarget = dSlideR.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
+            lNewTarget = dSlideL.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
+            rNewTarget = dSlideR.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
 
-            dSlideR.setTargetPosition(newTarget);
+            dSlideL.setTargetPosition(lNewTarget);
+            dSlideR.setTargetPosition(rNewTarget);
 
             // Turn On RUN_TO_POSITION
+            dSlideL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             dSlideR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
+            dSlideL.setPower(Math.abs(speed));
             dSlideR.setPower(Math.abs(speed));
 
             while (opModeIsActive() &&
@@ -289,17 +297,18 @@ public class MainTeleOp extends LinearOpMode {
                     (dSlideR.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1", "Running to", newTarget);
-                telemetry.addData("Path2", "Running at",
-                        dSlideR.getCurrentPosition());
+                telemetry.addData("Path1", "Running to", lNewTarget, rNewTarget);
+                telemetry.addData("Path2", "Running at");
                 telemetry.update();
             }
 
 
             // Stop all motion;
+            dSlideL.setPower(0);
             dSlideR.setPower(0);
 
             // Turn off RUN_TO_POSITION
+            dSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             dSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }

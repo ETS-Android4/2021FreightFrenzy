@@ -42,9 +42,10 @@ public class AutoTest extends LinearOpMode {
     static final double SPIN_GEAR_REDUCTION = 1;
 
     //instance for vertical lift
-    static final double TURN_WHEEL_DIAMETER_INCHES = 2.50;
-    static final double ROTATION_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (TURN_WHEEL_DIAMETER_INCHES * 3.14159265);
+    static final double PULLEY_WHEEL_DIAMETER_INCHES = 2.45;
+    static final double PULLEY_WHEEL_REDUCTION = 0.6;
+    static final double PULLEY_PER_INCH = (COUNTS_PER_MOTOR_REV * PULLEY_WHEEL_REDUCTION) /
+            (PULLEY_WHEEL_DIAMETER_INCHES * 3.14159265);
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -131,7 +132,7 @@ public class AutoTest extends LinearOpMode {
         //actual code under
 
         BarcodePositionDetector.BarcodePosition bP = detector.getBarcodePosition();
-        dSliderEncoder(0.4, bP, 0.5);
+        dSliderEncoder(0.4, bP, 2.0);
 
 
         telemetry.addData("Path", "Complete");
@@ -328,19 +329,19 @@ public class AutoTest extends LinearOpMode {
 
             //barcode check command for height
             if(bP == BarcodePositionDetector.BarcodePosition.LEFT) {
-                inches = 4.0;
+                inches = 2.0;
             }
             else if(bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
-                inches = 15.0;
+                inches = 7.0;
             }
             else if(bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
-                inches = 22.0;
+                inches = 14.0;
             }
 
 
                 // Determine new target position, and pass to motor controller
-            lNewTarget = dSlideL.getCurrentPosition() + (int) (inches * ROTATION_PER_INCH);
-            rNewTarget = dSlideR.getCurrentPosition() + (int) (inches * ROTATION_PER_INCH);
+            lNewTarget = dSlideL.getCurrentPosition() + (int) (inches * PULLEY_PER_INCH);
+            rNewTarget = dSlideR.getCurrentPosition() + (int) (inches * PULLEY_PER_INCH);
 
             dSlideL.setTargetPosition(lNewTarget);
             dSlideR.setTargetPosition(rNewTarget);

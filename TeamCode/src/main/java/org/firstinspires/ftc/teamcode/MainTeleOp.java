@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -11,9 +12,9 @@ import com.qualcomm.robotcore.util.Range;
 public class MainTeleOp extends LinearOpMode {
 
     static final double COUNTS_PER_MOTOR_REV = 537.6;
-    static final double DRIVE_GEAR_REDUCTION = 1.23;
+    static final double PULLEY_GEAR_REDUCTION = 0.6;
     static final double WHEEL_DIAMETER_INCHES = 2.45;
-    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * PULLEY_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159265);
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -31,6 +32,8 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor dSlideR;
     private DcMotor dSlideL;
 
+    //private DcMotor intake;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -47,6 +50,8 @@ public class MainTeleOp extends LinearOpMode {
         dSlideL = hardwareMap.get(DcMotor.class, "dSlideL");
 
         horizontal = hardwareMap.get(Servo.class, "horizontal");
+
+        //intake = hardwareMap.get(DcMotor.class, "intake");
 
         //Set brake.
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -207,19 +212,61 @@ public class MainTeleOp extends LinearOpMode {
             //Vertical Extension
 
             //Up
+
+
             if (gamepad2.dpad_up) {
-                dSliderEncoder(0.4, 5.0, 2);
+
+                dSliderEncoder(0.2, 2.0, 5.0);
+
             }
 
             //down
-            if (gamepad1.dpad_down) {
-                dSliderBackEncoder(0.4, 5.0, 2);
+
+            if(gamepad2.dpad_down) {
+                dSlideL.setDirection(DcMotorSimple.Direction.REVERSE);
+                dSlideR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+                dSliderEncoder(0.2, 2.0, 5.0);
+
+                dSlideL.setDirection(DcMotorSimple.Direction.FORWARD);
+                dSlideR.setDirection(DcMotorSimple.Direction.FORWARD);
+
             }
 
+
+            /**
+            if (gamepad1.dpad_down) {
+
+                dSliderBackEncoder(0.2, 2.0, 5.0);
+
+            }
+             **/
+
+            /**
+             *
+             * Intake
+
+            //In
+            if(gamepad2.right_bumper) {
+                intake.setPower(0.7);
+            }else {
+                intake.setPower(0.0);
+            }
+
+            if (gamepad2.left_bumper) {
+                intake.setDirection(DcMotor.Direction.REVERSE);
+                intake.setPower(0.7);
+            } else {
+                intake.setDirection(DcMotor.Direction.FORWARD);
+                intake.setPower(0.0);
+            }
+
+            **/
 
         }
 
     }
+
 
 
     public void dSliderEncoder(double speed, double inches, double timeoutS) {
@@ -264,55 +311,7 @@ public class MainTeleOp extends LinearOpMode {
 
         }
 
-
-
     }
 
-    public void dSliderBackEncoder(double speed, double inches, double timeoutS) {
-        int lNewTarget, rNewTarget;
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
-
-            dSlideL.setDirection(DcMotor.Direction.REVERSE);
-            dSlideR.setDirection(DcMotor.Direction.REVERSE);
-
-            // Determine new target position, and pass to motor controller
-            lNewTarget = dSlideL.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
-            rNewTarget = dSlideR.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
-
-            dSlideL.setTargetPosition(lNewTarget);
-            dSlideR.setTargetPosition(rNewTarget);
-
-            // Turn On RUN_TO_POSITION
-            dSlideL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            dSlideR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-            dSlideL.setPower(Math.abs(speed));
-            dSlideR.setPower(Math.abs(speed));
-
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    (dSlideR.isBusy())) {
-
-                // Display it for the driver.
-                telemetry.addData("Path1", "Running to", lNewTarget, rNewTarget);
-                telemetry.addData("Path2", "Running at");
-                telemetry.update();
-            }
-
-
-            // Stop all motion;
-            dSlideL.setPower(0);
-            dSlideR.setPower(0);
-
-            // Turn off RUN_TO_POSITION
-            dSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            dSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        }
-
-    }
 
 }

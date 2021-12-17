@@ -44,7 +44,8 @@ public class AutoTest extends LinearOpMode {
     //instance for vertical lift
     static final double PULLEY_WHEEL_DIAMETER_INCHES = 2.45;
     static final double PULLEY_WHEEL_REDUCTION = 0.6;
-    static final double PULLEY_PER_INCH = (COUNTS_PER_MOTOR_REV * PULLEY_WHEEL_REDUCTION) /
+    static final double PULLEY_WHEEL_VERTICAL_RATIO = 7.111;
+    static final double PULLEY_PER_INCH = (COUNTS_PER_MOTOR_REV * PULLEY_WHEEL_REDUCTION * PULLEY_WHEEL_VERTICAL_RATIO) /
             (PULLEY_WHEEL_DIAMETER_INCHES * 3.14159265);
 
     @Override
@@ -332,10 +333,10 @@ public class AutoTest extends LinearOpMode {
                 inches = 2.0;
             }
             else if(bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
-                inches = 7.0;
+                inches = 5.0;
             }
             else if(bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
-                inches = 14.0;
+                inches = 8.0;
             }
 
 

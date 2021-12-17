@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -14,7 +13,8 @@ public class MainTeleOp extends LinearOpMode {
     static final double COUNTS_PER_MOTOR_REV = 537.6;
     static final double PULLEY_GEAR_REDUCTION = 0.6;
     static final double WHEEL_DIAMETER_INCHES = 2.45;
-    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * PULLEY_GEAR_REDUCTION) /
+    static final double PULLEY_WHEEL_VERTICAL_RATIO = 7.111;
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * PULLEY_GEAR_REDUCTION * PULLEY_WHEEL_VERTICAL_RATIO) /
             (WHEEL_DIAMETER_INCHES * 3.14159265);
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -43,8 +43,8 @@ public class MainTeleOp extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         spinner = hardwareMap.get(DcMotor.class, "spinner");
-        arm = hardwareMap.get(DcMotor.class, "arm");
-        hand = hardwareMap.get(Servo.class, "hand");
+
+        //hand = hardwareMap.get(Servo.class, "hand");
 
         dSlideR = hardwareMap.get(DcMotor.class, "dSlideR");
         dSlideL = hardwareMap.get(DcMotor.class, "dSlideL");
@@ -63,7 +63,7 @@ public class MainTeleOp extends LinearOpMode {
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        arm.setDirection(DcMotor.Direction.REVERSE);
+        //arm.setDirection(DcMotor.Direction.REVERSE);
 
         // encoder use
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -115,6 +115,7 @@ public class MainTeleOp extends LinearOpMode {
 
             }
 
+            /**
             //arm
 
             //arm up
@@ -150,6 +151,8 @@ public class MainTeleOp extends LinearOpMode {
 
             }
 
+             **/
+
             //flip flop
 
             if (gamepad1.y) {
@@ -182,30 +185,21 @@ public class MainTeleOp extends LinearOpMode {
 
             }
 
-            if (gamepad2.dpad_up) {
-
-                dSlideR.setPower(0.3);
-
-            } else if (gamepad2.dpad_down) {
-
-                dSlideR.setPower(-0.3);
-
-            } else {
-
-                dSlideR.setPower(0);
-
-            }
-
             //Horizontal Extension
 
             //expand
             if (gamepad2.b) {
 
-                horizontal.setPosition(0.17);
-                //compress
-            } else if (gamepad2.x) {
+                horizontal.setPosition(0.27);
+                telemetry.addLine( "Position: " + horizontal.getPosition());
 
-                horizontal.setPosition(0.40);
+                //compress
+            }
+
+            if (gamepad2.x) {
+
+                horizontal.setPosition(0.12);
+                telemetry.addLine( "Position: " + horizontal.getPosition());
 
             }
 
@@ -223,13 +217,13 @@ public class MainTeleOp extends LinearOpMode {
             //down
 
             if(gamepad2.dpad_down) {
-                dSlideL.setDirection(DcMotorSimple.Direction.REVERSE);
-                dSlideR.setDirection(DcMotorSimple.Direction.REVERSE);
+                dSlideL.setDirection(DcMotor.Direction.REVERSE);
+                dSlideR.setDirection(DcMotor.Direction.REVERSE);
 
                 dSliderEncoder(0.2, 2.0, 5.0);
 
-                dSlideL.setDirection(DcMotorSimple.Direction.FORWARD);
-                dSlideR.setDirection(DcMotorSimple.Direction.FORWARD);
+                dSlideL.setDirection(DcMotor.Direction.FORWARD);
+                dSlideR.setDirection(DcMotor.Direction.FORWARD);
 
             }
 

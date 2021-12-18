@@ -22,6 +22,7 @@ public class AutoTest extends LinearOpMode {
     public DcMotor spinner;
     public DcMotor dSlideR;
     public DcMotor dSlideL;
+    public DcMotor intake;
 
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
@@ -74,6 +75,8 @@ public class AutoTest extends LinearOpMode {
         dSlideR = hardwareMap.dcMotor.get("dSlideR");
         dSlideL = hardwareMap.dcMotor.get("dSlideL");
 
+        intake = hardwareMap.dcMotor.get("intake");
+
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -104,6 +107,8 @@ public class AutoTest extends LinearOpMode {
         dSlideR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dSlideL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -111,6 +116,8 @@ public class AutoTest extends LinearOpMode {
         spinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         dSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         dSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
         telemetry.addData("Path0", "Starting at %7d :%7d",

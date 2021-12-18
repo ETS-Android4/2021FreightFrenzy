@@ -32,7 +32,7 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor dSlideR;
     private DcMotor dSlideL;
 
-    //private DcMotor intake;
+   private DcMotor intake;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -51,7 +51,7 @@ public class MainTeleOp extends LinearOpMode {
 
         horizontal = hardwareMap.get(Servo.class, "horizontal");
 
-        //intake = hardwareMap.get(DcMotor.class, "intake");
+        intake = hardwareMap.get(DcMotor.class, "intake");
 
         //Set brake.
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -71,6 +71,7 @@ public class MainTeleOp extends LinearOpMode {
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        dSlideL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         dSlideR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -78,7 +79,9 @@ public class MainTeleOp extends LinearOpMode {
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        dSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         dSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         double minPower = -.7;
         double maxPower = .7;
@@ -193,9 +196,10 @@ public class MainTeleOp extends LinearOpMode {
                 horizontal.setPosition(0.27);
                 telemetry.addLine( "Position: " + horizontal.getPosition());
 
-                //compress
+
             }
 
+            //compress
             if (gamepad2.x) {
 
                 horizontal.setPosition(0.12);
@@ -210,53 +214,45 @@ public class MainTeleOp extends LinearOpMode {
 
             if (gamepad2.dpad_up) {
 
-                dSliderEncoder(0.2, 2.0, 5.0);
+                dSliderEncoder(0.2, 3.5, 5.0);
 
             }
 
-            //down
+            //Down
 
             if(gamepad2.dpad_down) {
                 dSlideL.setDirection(DcMotor.Direction.REVERSE);
                 dSlideR.setDirection(DcMotor.Direction.REVERSE);
 
-                dSliderEncoder(0.2, 2.0, 5.0);
+                dSliderEncoder(0.2, 3.5, 5.0);
 
                 dSlideL.setDirection(DcMotor.Direction.FORWARD);
                 dSlideR.setDirection(DcMotor.Direction.FORWARD);
 
             }
 
+            //code for intake
 
-            /**
-            if (gamepad1.dpad_down) {
+            if (gamepad2.right_bumper) {
 
-                dSliderBackEncoder(0.2, 2.0, 5.0);
+                intake.setPower(0.4);
 
-            }
-             **/
+            } else {
 
-            /**
-             *
-             * Intake
-
-            //In
-            if(gamepad2.right_bumper) {
-                intake.setPower(0.7);
-            }else {
-                intake.setPower(0.0);
+                intake.setPower(0);
             }
 
             if (gamepad2.left_bumper) {
+
                 intake.setDirection(DcMotor.Direction.REVERSE);
-                intake.setPower(0.7);
-            } else {
+                intake.setPower(0.4);
                 intake.setDirection(DcMotor.Direction.FORWARD);
-                intake.setPower(0.0);
+
+            } else {
+
+                intake.setPower(0);
+
             }
-
-            **/
-
         }
 
     }

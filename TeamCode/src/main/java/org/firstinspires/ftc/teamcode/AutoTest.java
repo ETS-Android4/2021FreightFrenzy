@@ -20,8 +20,7 @@ public class AutoTest extends LinearOpMode {
     public DcMotor backLeft;
     public DcMotor backRight;
     public DcMotor spinner;
-    public DcMotor dSlideR;
-    public DcMotor dSlideL;
+    public DcMotor arm;
     public DcMotor intake;
 
     BNO055IMU imu;
@@ -43,11 +42,11 @@ public class AutoTest extends LinearOpMode {
     static final double SPIN_GEAR_REDUCTION = 1;
 
     //instance for vertical lift
-    static final double PULLEY_WHEEL_DIAMETER_INCHES = 2.45;
-    static final double PULLEY_WHEEL_REDUCTION = 0.6;
-    static final double PULLEY_WHEEL_VERTICAL_RATIO = 7.111;
-    static final double PULLEY_PER_INCH = (COUNTS_PER_MOTOR_REV * PULLEY_WHEEL_REDUCTION * PULLEY_WHEEL_VERTICAL_RATIO) /
-            (PULLEY_WHEEL_DIAMETER_INCHES * 3.14159265);
+    static final double ARM_WHEEL_REDUCTION = 5.0;
+    static final double ARM_RATIO = 1.0;
+    static final double ARM_WHEEL_DIAMETER_INCHES = 1.80;
+    static final double PULLEY_PER_INCH = (COUNTS_PER_MOTOR_REV * ARM_WHEEL_REDUCTION * ARM_RATIO) /
+            (ARM_WHEEL_DIAMETER_INCHES * 3.14159265);
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -72,8 +71,7 @@ public class AutoTest extends LinearOpMode {
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
         spinner = hardwareMap.dcMotor.get("spinner");
-        dSlideR = hardwareMap.dcMotor.get("dSlideR");
-        dSlideL = hardwareMap.dcMotor.get("dSlideL");
+        arm = hardwareMap.dcMotor.get("dSlideR");
 
         intake = hardwareMap.dcMotor.get("intake");
 
@@ -104,8 +102,7 @@ public class AutoTest extends LinearOpMode {
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         spinner.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dSlideR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        dSlideL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -114,8 +111,7 @@ public class AutoTest extends LinearOpMode {
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         spinner.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        dSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        dSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -140,7 +136,7 @@ public class AutoTest extends LinearOpMode {
         //actual code under
 
         BarcodePositionDetector.BarcodePosition bP = detector.getBarcodePosition();
-        dSliderEncoder(0.4, bP, 2.0);
+        armEncoder(0.4, bP, 2.0);
 
 
         telemetry.addData("Path", "Complete");
@@ -328,8 +324,8 @@ public class AutoTest extends LinearOpMode {
         spinner.setPower(0);
     }
 
-    public void dSliderEncoder(double speed, BarcodePositionDetector.BarcodePosition bP, double timeoutS) {
-        int lNewTarget, rNewTarget;
+    public void armEncoder(double speed, BarcodePositionDetector.BarcodePosition bP, double timeoutS) {
+        int newTarget;
         double inches = 0;
 
         // Ensure that the opmode is still active
@@ -348,39 +344,33 @@ public class AutoTest extends LinearOpMode {
 
 
                 // Determine new target position, and pass to motor controller
-            lNewTarget = dSlideL.getCurrentPosition() + (int) (inches * PULLEY_PER_INCH);
-            rNewTarget = dSlideR.getCurrentPosition() + (int) (inches * PULLEY_PER_INCH);
+            newTarget = arm.getCurrentPosition() + (int) (inches * PULLEY_PER_INCH);
 
-            dSlideL.setTargetPosition(lNewTarget);
-            dSlideR.setTargetPosition(rNewTarget);
+            arm.setTargetPosition(newTarget);
 
             // Turn On RUN_TO_POSITION
-            dSlideL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            dSlideR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
-            dSlideL.setPower(Math.abs(speed));
-            dSlideR.setPower(Math.abs(speed));
+            arm.setPower(Math.abs(speed));
 
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (dSlideR.isBusy())) {
+                    (arm.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1", "Running to", lNewTarget, rNewTarget);
+                telemetry.addData("Path1", "Running to", arm);
                 telemetry.addData("Path2", "Running at");
                 telemetry.update();
             }
 
 
             // Stop all motion;
-            dSlideL.setPower(0);
-            dSlideR.setPower(0);
+            arm.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            dSlideL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            dSlideR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
 

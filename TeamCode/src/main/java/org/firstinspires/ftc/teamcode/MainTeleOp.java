@@ -24,7 +24,7 @@ public class MainTeleOp extends LinearOpMode {
     static final double TOP = 8.0;
     static final double MID = 5.0;
     static final double LOW = 2.0;
-    static final double BOX = 4;
+
 
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -210,7 +210,7 @@ public class MainTeleOp extends LinearOpMode {
 
                     int newTarget;
 
-                    newTarget = arm.getCurrentPosition() + (int) (LOW * COUNTS_PER_INCH);
+                    newTarget = arm.getCurrentPosition() - (int) (LOW * COUNTS_PER_INCH);
 
                     arm.setTargetPosition(newTarget);
 
@@ -219,7 +219,7 @@ public class MainTeleOp extends LinearOpMode {
                     arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                     runtime.reset();
-                    arm.setPower(Math.abs(-0.7));
+                    arm.setPower(Math.abs(0.7));
 
                     // Stop all motion;
                     arm.setPower(0);

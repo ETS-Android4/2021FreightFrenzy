@@ -65,17 +65,17 @@ public class MainTeleOp extends LinearOpMode {
         arm.setDirection(DcMotor.Direction.REVERSE);
 
         // encoder use
-        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 

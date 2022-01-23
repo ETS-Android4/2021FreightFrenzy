@@ -17,6 +17,10 @@ public class MainTeleOp extends LinearOpMode {
     static final double ARM_RATIO = 7.111;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * ARM_GEAR_REDUCTION * ARM_RATIO) /
             (WHEEL_DIAMETER_INCHES * 3.14159265);
+    static final double OPEN = 0.5;
+    static final double MIDDLE = 0.75;
+    static final double CLOSE = 1;
+
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -42,7 +46,7 @@ public class MainTeleOp extends LinearOpMode {
         spinner = hardwareMap.get(DcMotor.class, "spinner");
         arm = hardwareMap.get(DcMotor.class, "arm");
         intake = hardwareMap.get(DcMotor.class, "intake");
-        boxServo = hardwareMap.servo.get("boxServo");
+        boxServo = hardwareMap.get(Servo.class, "boxServo");
 
         //Set brake.
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -153,17 +157,19 @@ public class MainTeleOp extends LinearOpMode {
 
             if (gamepad1.y) {
 
-                boxServo.setPosition(0.5);
+                sleep(1000);
+
+                boxServo.setPosition(MIDDLE);
 
             }
 
             if (gamepad1.a) {
 
-                boxServo.setPosition(1);
+                boxServo.setPosition(CLOSE);
 
                 sleep(1000);
 
-                boxServo.setPosition(0);
+                boxServo.setPosition(OPEN);
             }
         }
     }

@@ -132,12 +132,6 @@ public class MainTeleOp extends LinearOpMode {
                 runtime.reset();
                 arm.setPower(Math.abs(0.7));
 
-                if (arm.getCurrentPosition() / COUNTS_PER_INCH == BOX) {
-
-                    intake.setPower(0.5);
-
-                }
-
                 while (opModeIsActive() &&
                         (runtime.seconds() < timeoutS) &&
                         (arm.isBusy())) {
@@ -169,12 +163,6 @@ public class MainTeleOp extends LinearOpMode {
                 // reset the timeout time and start motion.
                 runtime.reset();
                 arm.setPower(Math.abs(0.7));
-
-                if (arm.getCurrentPosition() / COUNTS_PER_INCH == BOX) {
-
-                    intake.setPower(0.5);
-
-                }
 
                 while (opModeIsActive() &&
                         (runtime.seconds() < timeoutS) &&
@@ -209,12 +197,6 @@ public class MainTeleOp extends LinearOpMode {
                 runtime.reset();
                 arm.setPower(Math.abs(0.7));
 
-                if (arm.getCurrentPosition() / COUNTS_PER_INCH == BOX) {
-
-                    intake.setPower(0.5);
-
-                }
-
                 // Stop all motion;
                 arm.setPower(0);
 
@@ -239,12 +221,6 @@ public class MainTeleOp extends LinearOpMode {
                     runtime.reset();
                     arm.setPower(Math.abs(-0.7));
 
-                    if (arm.getCurrentPosition() / COUNTS_PER_INCH == BOX) {
-
-                        intake.setPower(0.5);
-
-                    }
-
                     // Stop all motion;
                     arm.setPower(0);
 
@@ -252,6 +228,14 @@ public class MainTeleOp extends LinearOpMode {
                     arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
                 }
+
+
+            }
+
+            if (gamepad1.left_bumper) {
+
+                intake.setPower(0.2);
+                sleep(5000);
 
 
             }

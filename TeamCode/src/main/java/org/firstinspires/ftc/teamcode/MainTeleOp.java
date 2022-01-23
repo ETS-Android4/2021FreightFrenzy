@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name = "DriveTrainTestLinearOp")
 public class MainTeleOp extends LinearOpMode {
 
+    //Constants for movement.
     static final double COUNTS_PER_MOTOR_REV = 537.6;
     static final double ARM_GEAR_REDUCTION = 5.0;
     static final double WHEEL_DIAMETER_INCHES = 2.45;
@@ -24,21 +26,23 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor backRight;
     private DcMotor spinner;
     private DcMotor arm;
+    private Servo boxServo;
 
     private DcMotor intake;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        //TODO: Hardware mapping when phones are configured;
+
+        //Mapping.
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         spinner = hardwareMap.get(DcMotor.class, "spinner");
         arm = hardwareMap.get(DcMotor.class, "arm");
-
         intake = hardwareMap.get(DcMotor.class, "intake");
+        boxServo = hardwareMap.servo.get("boxServo");
 
         //Set brake.
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -46,10 +50,9 @@ public class MainTeleOp extends LinearOpMode {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
+        //Change direction.
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
-
         arm.setDirection(DcMotor.Direction.REVERSE);
 
         // encoder use
@@ -66,7 +69,6 @@ public class MainTeleOp extends LinearOpMode {
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
 
         double minPower = -.7;
         double maxPower = .7;
@@ -103,8 +105,6 @@ public class MainTeleOp extends LinearOpMode {
                 spinner.setPower(0);
 
             }
-
-
             //arm
 
             //arm up
@@ -128,41 +128,6 @@ public class MainTeleOp extends LinearOpMode {
 
             }
 
-
-             /**
-
-            //flip flop
-
-            if (gamepad1.y) {
-
-                frontLeft.setDirection(DcMotor.Direction.FORWARD);
-                backLeft.setDirection(DcMotor.Direction.FORWARD);
-                backRight.setDirection(DcMotor.Direction.REVERSE);
-                frontRight.setDirection(DcMotor.Direction.REVERSE);
-
-                frontLeft.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
-                backLeft.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
-
-                frontRight.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
-                backRight.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
-
-
-            } else if (gamepad1.a) {
-
-                frontLeft.setDirection(DcMotor.Direction.REVERSE);
-                backLeft.setDirection(DcMotor.Direction.REVERSE);
-                frontRight.setDirection(DcMotor.Direction.FORWARD);
-                backRight.setDirection(DcMotor.Direction.FORWARD);
-
-                frontLeft.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
-                backLeft.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
-
-                frontRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
-                backRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
-
-
-            }
-              **/
             //code for intake
 
             if (gamepad1.right_bumper) {
@@ -185,50 +150,21 @@ public class MainTeleOp extends LinearOpMode {
                 intake.setPower(0);
 
             }
-        }
 
-    }
+            if (gamepad1.y) {
 
+                boxServo.setPosition(0.5);
 
-/**
-    public void armEncoder(double speed, double inches, double timeoutS) {
-        int newTarget;
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
-
-            // Determine new target position, and pass to motor controller
-            newTarget = arm.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
-
-            arm.setTargetPosition(newTarget);
-
-            // Turn On RUN_TO_POSITION
-            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            runtime.reset();
-            arm.setPower(Math.abs(speed));
-
-            while (opModeIsActive() &&
-                    (runtime.seconds() < timeoutS) &&
-                    (dSlideR.isBusy())) {
-
-                // Display it for the driver.
-                telemetry.addData("Path1", "Running to", arm);
-                telemetry.addData("Path2", "Running at");
-                telemetry.update();
             }
 
+            if (gamepad1.a) {
 
-            // Stop all motion;
-            arm.setPower(0);
+                boxServo.setPosition(1);
 
-            // Turn off RUN_TO_POSITION
-            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                sleep(1000);
 
+                boxServo.setPosition(0);
+            }
         }
-
     }
-    **/
-
-
 }

@@ -234,10 +234,11 @@ public class MainTeleOp extends LinearOpMode {
 
             if (gamepad1.left_bumper) {
 
-                intake.setPower(0.2);
-                sleep(5000);
+                intake.setPower(-0.65);
 
+            } else {
 
+                intake.setPower(0);
             }
 
 

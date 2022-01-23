@@ -14,12 +14,17 @@ public class MainTeleOp extends LinearOpMode {
     static final double COUNTS_PER_MOTOR_REV = 537.6;
     static final double ARM_GEAR_REDUCTION = 5.0;
     static final double WHEEL_DIAMETER_INCHES = 2.45;
-    static final double ARM_RATIO = 7.111;
+    static final double ARM_RATIO = 1.0;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * ARM_GEAR_REDUCTION * ARM_RATIO) /
             (WHEEL_DIAMETER_INCHES * 3.14159265);
     static final double OPEN = 0.5;
     static final double MIDDLE = 0.75;
     static final double CLOSE = 1;
+
+    static final double TOP = 8.0;
+    static final double MID = 5.0;
+    static final double LOW = 2.0;
+    static final double BOX = 4;
 
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -114,23 +119,143 @@ public class MainTeleOp extends LinearOpMode {
             //arm up
             if (gamepad1.dpad_up) {
 
-                arm.setPower(0.55);
+                int newTarget;
+                double timeoutS = 2.0;
+                newTarget = arm.getCurrentPosition() + (int) (TOP * COUNTS_PER_INCH);
 
-            } else if (!gamepad1.dpad_up) {
+                arm.setTargetPosition(newTarget);
 
+                // Turn On RUN_TO_POSITION
+                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                // reset the timeout time and start motion.
+                runtime.reset();
+                arm.setPower(Math.abs(0.7));
+
+                if (arm.getCurrentPosition() / COUNTS_PER_INCH == BOX) {
+
+                    intake.setPower(0.5);
+
+                }
+
+                while (opModeIsActive() &&
+                        (runtime.seconds() < timeoutS) &&
+                        (arm.isBusy())) {
+
+                    // Display it for the driver.
+                    telemetry.addData("Path1", "Running to", arm);
+                    telemetry.addData("Path2", "Running at");
+                    telemetry.update();
+                }
+
+                // Stop all motion;
                 arm.setPower(0);
 
+                // Turn off RUN_TO_POSITION
+                arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            }
+
+            if (gamepad1.dpad_left) {
+                int newTarget;
+                double timeoutS = 2.0;
+                newTarget = arm.getCurrentPosition() + (int) (MID * COUNTS_PER_INCH);
+
+                arm.setTargetPosition(newTarget);
+
+                // Turn On RUN_TO_POSITION
+                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                // reset the timeout time and start motion.
+                runtime.reset();
+                arm.setPower(Math.abs(0.7));
+
+                if (arm.getCurrentPosition() / COUNTS_PER_INCH == BOX) {
+
+                    intake.setPower(0.5);
+
+                }
+
+                while (opModeIsActive() &&
+                        (runtime.seconds() < timeoutS) &&
+                        (arm.isBusy())) {
+
+                    // Display it for the driver.
+                    telemetry.addData("Path1", "Running to", arm);
+                    telemetry.addData("Path2", "Running at");
+                    telemetry.update();
+                }
+
+                // Stop all motion;
+                arm.setPower(0);
+
+                // Turn off RUN_TO_POSITION
+                arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            }
+
+            if (gamepad1.dpad_right) {
+
+                int newTarget;
+
+                newTarget = arm.getCurrentPosition() + (int) (LOW * COUNTS_PER_INCH);
+
+                arm.setTargetPosition(newTarget);
+
+                // Turn On RUN_TO_POSITION
+
+                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                runtime.reset();
+                arm.setPower(Math.abs(0.7));
+
+                if (arm.getCurrentPosition() / COUNTS_PER_INCH == BOX) {
+
+                    intake.setPower(0.5);
+
+                }
+
+                // Stop all motion;
+                arm.setPower(0);
+
+                // Turn off RUN_TO_POSITION
+                arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
             if (gamepad1.dpad_down) {
 
-                arm.setPower(-0.55);
+                if (gamepad1.dpad_right) {
 
-            } else if (!gamepad1.dpad_down) {
+                    int newTarget;
 
-                arm.setPower(0);
+                    newTarget = arm.getCurrentPosition() + (int) (LOW * COUNTS_PER_INCH);
+
+                    arm.setTargetPosition(newTarget);
+
+                    // Turn On RUN_TO_POSITION
+
+                    arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                    runtime.reset();
+                    arm.setPower(Math.abs(-0.7));
+
+                    if (arm.getCurrentPosition() / COUNTS_PER_INCH == BOX) {
+
+                        intake.setPower(0.5);
+
+                    }
+
+                    // Stop all motion;
+                    arm.setPower(0);
+
+                    // Turn off RUN_TO_POSITION
+                    arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+                }
+
 
             }
+
 
             //code for intake
 
@@ -171,6 +296,7 @@ public class MainTeleOp extends LinearOpMode {
 
                 boxServo.setPosition(OPEN);
             }
+
         }
     }
 }

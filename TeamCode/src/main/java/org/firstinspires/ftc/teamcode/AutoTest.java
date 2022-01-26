@@ -44,8 +44,8 @@ public class AutoTest extends LinearOpMode {
     //instance for vertical lift
     static final double ARM_WHEEL_REDUCTION = 5.0;
     static final double ARM_RATIO = 1.0;
-    static final double ARM_WHEEL_DIAMETER_INCHES = 1.80;
-    static final double PULLEY_PER_INCH = (COUNTS_PER_MOTOR_REV * ARM_WHEEL_REDUCTION * ARM_RATIO) /
+    static final double ARM_WHEEL_DIAMETER_INCHES = 1.9;
+    static final double ARM_PER_INCH = (COUNTS_PER_MOTOR_REV * ARM_WHEEL_REDUCTION * ARM_RATIO) /
             (ARM_WHEEL_DIAMETER_INCHES * 3.14159265);
 
     @Override
@@ -71,8 +71,7 @@ public class AutoTest extends LinearOpMode {
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
         spinner = hardwareMap.dcMotor.get("spinner");
-        arm = hardwareMap.dcMotor.get("dSlideR");
-
+        arm = hardwareMap.dcMotor.get("arm");
         intake = hardwareMap.dcMotor.get("intake");
 
 
@@ -128,6 +127,8 @@ public class AutoTest extends LinearOpMode {
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
 
+        armEncoder(0.4, 5, 2.0);
+
         telemetry.addLine( "Position: " + detector.getBarcodePosition());
         telemetry.update();
 
@@ -135,9 +136,10 @@ public class AutoTest extends LinearOpMode {
 
         //actual code under
 
+        //encoderDrive(0.5, 6, 6, 2.0);
+        //rotate(-90, 0.4);
         BarcodePositionDetector.BarcodePosition bP = detector.getBarcodePosition();
-        armEncoder(0.4, bP, 2.0);
-
+        armVisionEncoder(0.4, bP, 2.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -324,7 +326,46 @@ public class AutoTest extends LinearOpMode {
         spinner.setPower(0);
     }
 
-    public void armEncoder(double speed, BarcodePositionDetector.BarcodePosition bP, double timeoutS) {
+    public void armEncoder(double speed, double inches, double timeoutS)
+    {
+        int newTarget;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+            newTarget = arm.getCurrentPosition() + (int) (inches * ARM_PER_INCH);
+
+            arm.setTargetPosition(newTarget);
+
+            // Turn On RUN_TO_POSITION
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            arm.setPower(Math.abs(speed));
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (arm.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Path1", "Running to", arm);
+                telemetry.addData("Path2", "Running at");
+                telemetry.update();
+            }
+
+
+            // Stop all motion;
+            arm.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+    }
+
+    public void armVisionEncoder(double speed, BarcodePositionDetector.BarcodePosition bP, double timeoutS) {
         int newTarget;
         double inches = 0;
 
@@ -344,7 +385,7 @@ public class AutoTest extends LinearOpMode {
 
 
                 // Determine new target position, and pass to motor controller
-            newTarget = arm.getCurrentPosition() + (int) (inches * PULLEY_PER_INCH);
+            newTarget = arm.getCurrentPosition() + (int) (inches * ARM_PER_INCH);
 
             arm.setTargetPosition(newTarget);
 

@@ -57,6 +57,11 @@ public class BlueLeftAuto extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
+
+        BarcodeUtil detector = new BarcodeUtil(hardwareMap, "webcam", telemetry);
+        detector.init();
+
+
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
         frontRight = hardwareMap.dcMotor.get("frontRight");
         backLeft = hardwareMap.dcMotor.get("backLeft");
@@ -112,6 +117,7 @@ public class BlueLeftAuto extends LinearOpMode {
 
         //actual code under
         encoderDrive(0.7, 12, 12, 5.0);
+
         rotate(-90, 0.5);
 
         encoderDrive(0.7, 48, 48, 5.0);

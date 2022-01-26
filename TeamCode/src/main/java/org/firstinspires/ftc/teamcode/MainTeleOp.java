@@ -76,10 +76,6 @@ public class MainTeleOp extends LinearOpMode {
 
         // encoder use
 
-        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         double minPower = -.7;
         double maxPower = .7;
 
@@ -93,6 +89,8 @@ public class MainTeleOp extends LinearOpMode {
 
             frontRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
             backRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
+
+
 
             //spinner
 
@@ -120,109 +118,31 @@ public class MainTeleOp extends LinearOpMode {
             //arm up
             if (gamepad1.dpad_up) {
 
-                int newTarget;
-                double timeoutS = 2.0;
-                newTarget = arm.getCurrentPosition() + (int) (MOVE * COUNTS_PER_INCH);
-
-                arm.setTargetPosition(newTarget);
-
-                // Turn On RUN_TO_POSITION
-                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                // reset the timeout time and start motion.
-                runtime.reset();
-                arm.setPower(Math.abs(0.5));
-
-                while (opModeIsActive() &&
-                        (runtime.seconds() < timeoutS) &&
-                        (arm.isBusy())) {
-
-                    // Display it for the driver.
-                    telemetry.addData("Path1", "Running to", arm);
-                    telemetry.addData("Path2", "Running at");
-                    telemetry.update();
-
-                }
-
-                // Stop all motion;
-                arm.setPower(0);
-
-                // Turn off RUN_TO_POSITION
-                arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-                while (arm.getTargetPosition() == MOVE) {
-                    if(arm.getTargetPosition() > 10.0) {
-                        arm.setPower(-0.1);
-                        sleep(1000);
-                        break;
-                    }
-                    arm.setPower(0.1);
-                    sleep(1000);
-                    break;
-
-                }
-
-            }
-
-            if (gamepad1.dpad_left) {
-
-                arm.setPower(-0.55);
-
-            } else {
-                arm.setPower(0.0);
-            }
-
-            if (gamepad1.dpad_right) {
-
-                arm.setPower(0.55);
+                arm.setPower(0.65);
 
             } else {
 
-                arm.setPower(0.0);
+                arm.setPower(-0.035);
 
             }
+
 
             if (gamepad1.dpad_down) {
 
-                int newTarget;
-                double timeoutS = 2.0;
-                newTarget = arm.getCurrentPosition() + (int) (-MOVE * COUNTS_PER_INCH);
+                arm.setPower(-0.65);
 
-                arm.setTargetPosition(newTarget);
+            }else{
 
-                // Turn On RUN_TO_POSITION
-                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                // reset the timeout time and start motion.
-                runtime.reset();
-                arm.setPower(Math.abs(0.5));
-
-                while (opModeIsActive() &&
-                        (runtime.seconds() < timeoutS) &&
-                        (arm.isBusy())) {
-
-                    // Display it for the driver.
-                    telemetry.addData("Path1", "Running to", arm);
-                    telemetry.addData("Path2", "Running at");
-                    telemetry.update();
-                }
-
-                // Stop all motion;
-                arm.setPower(0);
-
-                // Turn off RUN_TO_POSITION
-                arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-                while (arm.getTargetPosition() == (-MOVE)) {
-                    arm.setPower(0.1);
-                    sleep(1000);
-                    break;
-                }
-
+                arm.setPower(0.035);
 
             }
+
+
+            //arm stationary power use
+
+            //arm.setPower(Range.clip(gamepad1.right_trigger, 0, 0.05));
+            //arm.setPower(Range.clip(gamepad1.left_trigger,0,-0.05));
+
 
             if (gamepad1.left_bumper) {
 

@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -20,6 +21,8 @@ public class RedLeftAuto extends LinearOpMode {
     public DcMotor backLeft;
     public DcMotor backRight;
     public DcMotor spinner;
+    public DcMotor arm;
+    public Servo boxServo;
 
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
@@ -33,11 +36,16 @@ public class RedLeftAuto extends LinearOpMode {
     static final double WHEEL_DIAMETER_INCHES = 4.724;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159265);
-    static final double DRIVE_SPEED = 0.70;
-    static final double TURN_SPEED = 0.15;
+    static final double ARM_WHEEL_REDUCTION = 5.0;
+    static final double ARM_RATIO = 1.0;
+    static final double ARM_WHEEL_DIAMETER_INCHES = 1.9;
+    static final double ARM_PER_INCH = (COUNTS_PER_MOTOR_REV * ARM_WHEEL_REDUCTION * ARM_RATIO) /
+            (ARM_WHEEL_DIAMETER_INCHES * 3.14159265);
 
-    static final double TICKS_PER_SPINNER_REV = 1120;
-    static final double SPIN_GEAR_REDUCTION = 1;
+
+    static final double OPEN = 0.44;
+    static final double MIDDLE = 0.55;
+    static final double CLOSE = 1.0;
 
 
     @Override
@@ -55,11 +63,16 @@ public class RedLeftAuto extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
+        BarcodeUtil detector = new BarcodeUtil( hardwareMap, "webcam", telemetry );
+        detector.init();
+
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
         frontRight = hardwareMap.dcMotor.get("frontRight");
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
         spinner = hardwareMap.dcMotor.get("spinner");
+        arm = hardwareMap.dcMotor.get("arm");
+        boxServo = hardwareMap.get(Servo.class, "boxServo");
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -109,6 +122,7 @@ public class RedLeftAuto extends LinearOpMode {
         waitForStart();
 
         //actual code under
+        /**
         encoderDrive(0.7, 21, 21, 1);
         rotate(85, .5);
         encoderDrive(0.7, 31, 31, 1);
@@ -120,6 +134,20 @@ public class RedLeftAuto extends LinearOpMode {
         duckByTime(-.55, 5000);
 
         encoderDrive(0.7, -19.5,-19.5, 1);
+**/
+
+        BarcodePositionDetector.BarcodePosition bP = detector.getBarcodePosition();
+
+        if(bP == BarcodePositionDetector.BarcodePosition.LEFT) {
+            encoderDrive(0.5, 6, 6, 2.0);
+        }
+        else if(bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
+            rotate(90, 0.5);
+        }
+        else if(bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
+            rotate(-90, 50);
+        }
+
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -305,4 +333,61 @@ public class RedLeftAuto extends LinearOpMode {
 
         spinner.setPower(0);
     }
+
+    public void armVisionEncoder(double speed, BarcodePositionDetector.BarcodePosition bP, double timeoutS) {
+        int newTarget;
+        double inches = 0;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            //barcode check command for height
+            if (bP == BarcodePositionDetector.BarcodePosition.LEFT) {
+                inches = 2.0;
+            } else if (bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
+                inches = 5.0;
+
+            } else if (bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
+                inches = 8.0;
+
+            }
+
+
+            // Determine new target position, and pass to motor controller
+            newTarget = arm.getCurrentPosition() + (int) (inches * ARM_PER_INCH);
+
+            arm.setTargetPosition(newTarget);
+
+            // Turn On RUN_TO_POSITION
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            arm.setPower(Math.abs(speed));
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (arm.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Path1", "Running to", arm);
+                telemetry.addData("Path2", "Running at");
+                telemetry.update();
+            }
+
+
+            // Stop all motion;
+            arm.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+            boxServo.setPosition(CLOSE);
+            sleep(1000);
+            boxServo.setPosition(OPEN);
+
+        }
+    }
+
 }

@@ -127,8 +127,6 @@ public class AutoTest extends LinearOpMode {
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
 
-        armEncoder(0.4, 5, 2.0);
-
         telemetry.addLine( "Position: " + detector.getBarcodePosition());
         telemetry.update();
 
@@ -139,7 +137,7 @@ public class AutoTest extends LinearOpMode {
         //encoderDrive(0.5, 6, 6, 2.0);
         //rotate(-90, 0.4);
         BarcodePositionDetector.BarcodePosition bP = detector.getBarcodePosition();
-        armVisionEncoder(0.4, bP, 2.0);
+        //armVisionEncoder(0.4, bP, 2.0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

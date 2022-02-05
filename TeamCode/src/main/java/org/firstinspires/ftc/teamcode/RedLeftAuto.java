@@ -63,7 +63,7 @@ public class RedLeftAuto extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        BarcodeUtil detector = new BarcodeUtil( hardwareMap, "webcam", telemetry );
+        BarcodeUtil detector = new BarcodeUtil(hardwareMap, "webcam", telemetry);
         detector.init();
 
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
@@ -123,36 +123,162 @@ public class RedLeftAuto extends LinearOpMode {
 
         //actual code under
         /**
-        encoderDrive(0.7, 21, 21, 1);
-        rotate(85, .5);
-        encoderDrive(0.7, 31, 31, 1);
-        rotate(85, .5);
-        encoderDrive(0.7, 14, 14, 1);
-        sleep(1000);
-        encoderDrive(0.2, 2, 2, 1);
+         encoderDrive(0.7, 21, 21, 1);
+         rotate(85, .5);
+         encoderDrive(0.7, 31, 31, 1);
+         rotate(85, .5);
+         encoderDrive(0.7, 14, 14, 1);
+         sleep(1000);
+         encoderDrive(0.2, 2, 2, 1);
 
-        duckByTime(-.55, 5000);
+         duckByTime(-.55, 5000);
 
-        encoderDrive(0.7, -19.5,-19.5, 1);
-**/
+         encoderDrive(0.7, -19.5,-19.5, 1);
+         **/
 
         BarcodePositionDetector.BarcodePosition bP = detector.getBarcodePosition();
 
-        if(bP == BarcodePositionDetector.BarcodePosition.LEFT) {
-            encoderDrive(0.5, 6, 6, 2.0);
-        }
-        else if(bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
-            rotate(90, 0.5);
-        }
-        else if(bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
-            rotate(-90, 50);
-        }
+        telemetry.addLine( "Position: " + detector.getBarcodePosition());
+        telemetry.update();
 
+        if (bP == BarcodePositionDetector.BarcodePosition.LEFT) {
+
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoderInches(-.35, -1, 2.0);
+
+            arm.setPower(0.015);
+
+            encoderDrive(0.5, -35, -35, 2.0);
+            rotate(-60, .5);
+            encoderDrive(0.5, -14, -14, 2.0);
+            encoderDrive(0.3, -0.5, -0.5, 2.0);
+
+            boxServo.setPosition(CLOSE);
+
+            sleep(1000);
+
+
+            encoderDrive(0.5, 27.5, 27.5, 2.0);
+            sleep(1000);
+            rotate(203, 0.5);
+
+            sleep (1000);
+
+            armVisionEncoderInches(-.35, 4, 2.0);
+            arm.setPower(-0.015);
+
+            sleep (1000);
+            encoderDrive(0.35, -42, -42, 2.0);
+            encoderDrive(0.2, -2, 0, 2.0);
+
+            duckByTime(-.5, 5000);
+
+            encoderDrive(0.5, 3, 3,  2.0);
+            resetAngle();
+            rotate(-5, 0.5);
+            encoderDrive(0.5, 20,20, 2.0);
+
+            //parking left
+
+        } else if (bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
+
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoderInches(-.35, 1.5, 2.0);
+            arm.setPower(0.015);
+
+            encoderDrive(0.5, -35, -35, 2.0);
+            rotate(-60, .5);
+            encoderDrive(0.5, -14, -14, 2.0);
+            encoderDrive(0.3, -1, -1, 2.0);
+
+            boxServo.setPosition(CLOSE);
+
+            sleep(1000);
+
+
+            encoderDrive(0.5, 28, 28, 2.0);
+            sleep(1000);
+            rotate(205.5, 0.5);
+
+            sleep (1000);
+
+            armVisionEncoderInches(-.35, 4, 2.0);
+            arm.setPower(0.015);
+
+            sleep (1000);
+            encoderDrive(0.35, -42, -42, 2.0);
+            encoderDrive(.2, -2, 0, 2.0);
+
+            duckByTime(-.55, 5000);
+
+            encoderDrive(0.5, 3, 3,  2.0);
+            resetAngle();
+            rotate(-5, 0.5);
+            encoderDrive(0.5, 20,20, 2.0);
+
+            /**
+            armVisionEncoderInches(0.5, -3, 2);
+            boxServo.setPosition(MIDDLE);
+
+            arm.setPower(-0.015);
+
+            encoderDrive(0.5, -6, -6, 2.0);
+            rotate(-45, 5);
+
+            armVisionEncoder(0.5, BarcodePositionDetector.BarcodePosition.MIDDLE, 2.0);
+            boxServo.setPosition(CLOSE);
+            rotate(135, .5);
+
+            encoderDrive(0.5, 24, 24, 2.0);
+            encoderDrive(0.2, 4, 4, 2.0);
+
+            duckByTime(-.55, 5000);
+**/
+
+        } else if (bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
+
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoderInches(-.35, 2.2, 2.0);
+
+            arm.setPower(0.015);
+
+            encoderDrive(0.5, -35, -35, 2.0);
+            rotate(-60, .5);
+            encoderDrive(0.5, -14, -14, 2.0);
+            encoderDrive(0.3, -2, -2, 2.0);
+
+            boxServo.setPosition(CLOSE);
+
+
+            sleep(1000);
+
+
+
+            encoderDrive(0.5, 28, 28, 2.0);
+            sleep(1000);
+            rotate(205.5, 0.5);
+
+            sleep (1000);
+
+            encoderDrive(0.35, -42, -42, 2.0);
+
+            duckByTime(-.55, 5000);
+
+            encoderDrive(0.5, 3, 3,  2.0);
+            resetAngle();
+            rotate(-5, 0.5);
+            encoderDrive(0.5, 20,20, 2.0);
+
+        }
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
 
     }
+
 
     //Method for driving with encoder
     public void encoderDrive(double speed,
@@ -239,7 +365,7 @@ public class RedLeftAuto extends LinearOpMode {
     }
 
     //The method turns the robot by a specific angle, -180 to +180.
-    public void rotate(int degrees, double power) {
+    public void rotate(double degrees, double power) {
         double leftPower, rightPower;
         if (degrees > 0) {
 
@@ -343,12 +469,12 @@ public class RedLeftAuto extends LinearOpMode {
 
             //barcode check command for height
             if (bP == BarcodePositionDetector.BarcodePosition.LEFT) {
-                inches = 2.0;
+                inches = -10;
             } else if (bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
-                inches = 5.0;
+                inches = -5.0;
 
             } else if (bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
-                inches = 8.0;
+                inches = -8.0;
 
             }
 
@@ -383,11 +509,43 @@ public class RedLeftAuto extends LinearOpMode {
             arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
-            boxServo.setPosition(CLOSE);
-            sleep(1000);
-            boxServo.setPosition(OPEN);
-
         }
     }
 
+    public void armVisionEncoderInches(double speed, double inches, double timeoutS) {
+        int newTarget;
+
+        // Determine new target position, and pass to motor controller
+        newTarget = arm.getCurrentPosition() + (int) (inches * ARM_PER_INCH);
+
+        arm.setTargetPosition(newTarget);
+
+        // Turn On RUN_TO_POSITION
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // reset the timeout time and start motion.
+        runtime.reset();
+        arm.setPower(Math.abs(speed));
+
+        while (opModeIsActive() &&
+                (runtime.seconds() < timeoutS) &&
+                (arm.isBusy())) {
+
+            // Display it for the driver.
+            telemetry.addData("Path1", "Running to", arm);
+            telemetry.addData("Path2", "Running at");
+            telemetry.update();
+        }
+
+
+        // Stop all motion;
+        arm.setPower(0);
+
+        // Turn off RUN_TO_POSITION
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+    }
 }
+
+

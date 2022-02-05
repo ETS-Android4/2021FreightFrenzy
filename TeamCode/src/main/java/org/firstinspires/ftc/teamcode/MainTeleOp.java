@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -83,6 +84,7 @@ public class MainTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
+
             //compensate for hardware issue
             frontLeft.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
             backLeft.setPower(Range.clip(-gamepad1.right_stick_y, minPower, maxPower));
@@ -91,12 +93,13 @@ public class MainTeleOp extends LinearOpMode {
             backRight.setPower(Range.clip(-gamepad1.left_stick_y, minPower, maxPower));
 
 
-
             //spinner
 
             if (gamepad1.b) {
 
+
                 spinner.setPower(1.0);
+
 
             } else if (!gamepad1.b) {
 
@@ -106,7 +109,7 @@ public class MainTeleOp extends LinearOpMode {
 
             if (gamepad1.x) {
 
-                spinner.setPower(-1.0);
+                spinner.setPower(-0.95);
 
             } else if (!gamepad1.x) {
 
@@ -122,7 +125,7 @@ public class MainTeleOp extends LinearOpMode {
 
             } else {
 
-                arm.setPower(-0.035);
+                arm.setPower(-0.025);
 
             }
 
@@ -131,9 +134,9 @@ public class MainTeleOp extends LinearOpMode {
 
                 arm.setPower(-0.65);
 
-            }else{
+            } else {
 
-                arm.setPower(0.035);
+                arm.setPower(0.025);
 
             }
 
@@ -148,7 +151,7 @@ public class MainTeleOp extends LinearOpMode {
 
                 intake.setPower(0.6);
 
-            }else {
+            } else {
                 intake.setPower(0.0);
             }
 
@@ -159,7 +162,7 @@ public class MainTeleOp extends LinearOpMode {
 
                 intake.setPower(-0.6);
 
-            }else {
+            } else {
                 intake.setPower(0.0);
             }
 
@@ -170,7 +173,7 @@ public class MainTeleOp extends LinearOpMode {
 
             }
 
-            if(gamepad1.a) {
+            if (gamepad1.a) {
 
                 boxServo.setPosition(CLOSE);
                 sleep(1000);
@@ -178,81 +181,39 @@ public class MainTeleOp extends LinearOpMode {
 
             }
 
-        }
-    }
+            /**
+            if (gamepad1.dpad_left) {
 
-        //This method reads the IMU getting the angle. It automatically adjusts the angle so that it is between -180 and +180.
-        public double getAngle () {
-            Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-            double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
-
-            if (deltaAngle < -180)
-                deltaAngle += 360;
-            else if (deltaAngle > 180)
-                deltaAngle -= 360;
-
-            globalAngle += deltaAngle;
-
-            lastAngles = angles;
-
-            return globalAngle;
-        }
-
-        public void rotate ( int degrees, double power){
-            double leftPower, rightPower;
-            if (degrees > 0) {
-
-                degrees -= 16;
-
-            } else if (degrees < 0) {
-
-                degrees += 16;
 
             }
 
-            resetAngle();
-
-            //if the degrees are less than 0, the robot will turn right
-            if (degrees < 0) {
-                leftPower = power;
-                rightPower = -power;
-            } else if (degrees > 0)//if greater than 0, turn left
-            {
-                leftPower = -power;
-                rightPower = power;
-            } else return;
-
-            //sets power to motors with negative signs properly assigned to make the robot go in the correct direction
-            intake.setPower(rightPower);
-
-            //Repeatedly check the IMU until the getAngle() function returns the value specified.
-            if (degrees < 0) {
-                while (opModeIsActive() && getAngle() == 0) {
-                }
-
-                while (opModeIsActive() && getAngle() > degrees) {
-                }
-            } else
-                while (opModeIsActive() && getAngle() < degrees) {
-                }
+            if (gamepad1.dpad_right) {
 
 
-            //stop the motors after the angle has been found.
+            }
+             **/
 
-            intake.setPower(0);
-
-            //sleep for a bit to make sure the robot doesn't over shoot
-            sleep(1000);
-
-            resetAngle();
         }
+    }
 
+    public void armEncoder(double speed, double inches, double timeoutS) {
+        int newTarget;
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+            // Determine new target position, and pass to motor controller
+            newTarget = arm.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
+            arm.setTargetPosition(newTarget);
+            // Turn On RUN_TO_POSITION
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            // reset the timeout time and start motion.
+            runtime.reset();
+            arm.setPower(Math.abs(speed));
 
-        //this method resets the angle so that the robot's heading is now 0
-        public void resetAngle () {
-            lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-            globalAngle = 0;
+            // Stop all motion;
+            arm.setPower(0);
+            // Turn off RUN_TO_POSITION
+            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
+    }
+
 }

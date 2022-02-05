@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -13,7 +14,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Disabled
 @Autonomous(name = "RedRightAuto")
 public class RedRightAuto extends LinearOpMode {
 
@@ -22,6 +22,12 @@ public class RedRightAuto extends LinearOpMode {
     public DcMotor backLeft;
     public DcMotor backRight;
     public DcMotor spinner;
+    public DcMotor arm;
+    public Servo boxServo;
+
+    static final double OPEN = 0.44;
+    static final double MIDDLE = 0.55;
+    static final double CLOSE = 1.0;
 
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
@@ -30,17 +36,20 @@ public class RedRightAuto extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
+
+    static final double TICKS_PER_SPINNER_REV = 1120;
+    static final double SPIN_GEAR_REDUCTION = 1;
+
     static final double COUNTS_PER_MOTOR_REV = 537.6;
     static final double DRIVE_GEAR_REDUCTION = 1.23;
     static final double WHEEL_DIAMETER_INCHES = 4.724;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159265);
-    static final double DRIVE_SPEED = 0.70;
-    static final double TURN_SPEED = 0.15;
-
-    static final double TICKS_PER_SPINNER_REV = 1120;
-    static final double SPIN_GEAR_REDUCTION = 1;
-
+    static final double ARM_WHEEL_REDUCTION = 5.0;
+    static final double ARM_RATIO = 1.0;
+    static final double ARM_WHEEL_DIAMETER_INCHES = 1.9;
+    static final double ARM_PER_INCH = (COUNTS_PER_MOTOR_REV * ARM_WHEEL_REDUCTION * ARM_RATIO) /
+            (ARM_WHEEL_DIAMETER_INCHES * 3.14159265);
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -57,11 +66,19 @@ public class RedRightAuto extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
+        BarcodeUtil detector = new BarcodeUtil(hardwareMap, "webcam", telemetry);
+        detector.init();
+
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
         frontRight = hardwareMap.dcMotor.get("frontRight");
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
         spinner = hardwareMap.dcMotor.get("spinner");
+
+
+        arm = hardwareMap.dcMotor.get("arm");
+        boxServo = hardwareMap.get(Servo.class, "boxServo");
+
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -108,39 +125,148 @@ public class RedRightAuto extends LinearOpMode {
         telemetry.addData("imu calib status", imu.getCalibrationStatus().toString());
         telemetry.update();
 
-        BarcodeUtil detector = new BarcodeUtil(hardwareMap, "webcam", telemetry);
-        detector.init();
-
-        telemetry.addLine("Image Detection init finished");
-        telemetry.update();
-
-        String position = detector.getBarcodePosition().toString();
-        telemetry.addData("Duck position:", position);
-
         waitForStart();
 
-        //actual code under
+        BarcodePositionDetector.BarcodePosition bP = detector.getBarcodePosition();
+
+        telemetry.addLine("Position: " + detector.getBarcodePosition());
+        telemetry.update();
+
+        if (bP == BarcodePositionDetector.BarcodePosition.LEFT) {
+
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoderInches(-.35, -1, 2.0);
+
+            arm.setPower(0.015);
+
+            encoderDrive(0.5, -35, -35, 2.0);
+            rotate(60, .5);
+            encoderDrive(0.5, -14, -14, 2.0);
+            encoderDrive(0.3, -0.5, -0.5, 2.0);
+
+            boxServo.setPosition(CLOSE);
+
+            sleep(1000);
+
+            rotate(15, 0.5);
+
+            encoderDrive(0.5, 24, 24, 0.2);
+/**
+            encoderDrive(0.5, 27.5, 27.5, 2.0);
+            sleep(1000);
+            rotate(203, 0.5);
+
+            sleep(1000);
+
+            armVisionEncoderInches(-.35, 4, 2.0);
+            arm.setPower(-0.015);
+
+            sleep(1000);
+            encoderDrive(0.35, -42, -42, 2.0);
+            encoderDrive(0.2, -2, 0, 2.0);
+
+            duckByTime(-.55, 5000);
+
+            encoderDrive(0.5, 3, 3, 2.0);
+            resetAngle();
+            rotate(-5, 0.5);
+            encoderDrive(0.5, 20, 20, 2.0);
+
+            //parking left
+**/
+        } else if (bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
+
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoderInches(-.35, 1.5, 2.0);
+            arm.setPower(0.015);
+
+            encoderDrive(0.5, -35, -35, 2.0);
+            rotate(60, .5);
+            encoderDrive(0.5, -14, -14, 2.0);
+            encoderDrive(0.3, -1, -1, 2.0);
+
+            boxServo.setPosition(CLOSE);
 
 
+            sleep(1000);
 
+            rotate(15, 0.5);
 
-        //go for parking
-        encoderDrive(0.7, 6, 6, 2);
-        rotate(90, 0.5);
-        encoderDrive(0.7, 30, 30, 3);
-        rotate(45, 0.5);
+            encoderDrive(0.5, 24, 24, 0.2);
 
-        moveDuck(0.7);
+            /**
+             armVisionEncoderInches(0.5, -3, 2);
+             boxServo.setPosition(MIDDLE);
 
-        rotate(90, 0.5);
-        encoderDrive(0.7, 96, 96, 5);
+             arm.setPower(-0.015);
 
-        rotate(90, 0.5);
+             encoderDrive(0.5, -6, -6, 2.0);
+             rotate(-45, 5);
+
+             armVisionEncoder(0.5, BarcodePositionDetector.BarcodePosition.MIDDLE, 2.0);
+             boxServo.setPosition(CLOSE);
+             rotate(135, .5);
+
+             encoderDrive(0.5, 24, 24, 2.0);
+             encoderDrive(0.2, 4, 4, 2.0);
+
+             duckByTime(-.55, 5000);
+             **/
+
+        } else if (bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
+
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoderInches(-.35, 2.2, 2.0);
+
+            arm.setPower(0.015);
+
+            encoderDrive(0.5, -35, -35, 2.0);
+            rotate(60, .5);
+            encoderDrive(0.5, -14, -14, 2.0);
+            encoderDrive(0.3, -1, -1, 2.0);
+
+            boxServo.setPosition(CLOSE);
+
+            sleep(1000);
+
+            encoderDrive(0.5, 5, 5, 2);
+
+            rotate(-45, 0.5);
+
+            encoderDrive(0.5, 20, 20, 2);
+
+            rotate(55, 0.5);
+
+            encoderDrive(0.5, 30, 30, 2);
+
+        }
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
 
     }
+
+
+    /**
+     * //go for parking
+     * encoderDrive(0.7, 6, 6, 2);
+     * rotate(90, 0.5);
+     * encoderDrive(0.7, 30, 30, 3);
+     * rotate(45, 0.5);
+     * <p>
+     * moveDuck(0.7);
+     * <p>
+     * rotate(90, 0.5);
+     * encoderDrive(0.7, 96, 96, 5);
+     * <p>
+     * rotate(90, 0.5);
+     * <p>
+     * telemetry.addData("Path", "Complete");
+     * telemetry.update();
+     **/
 
     //Method for driving with encoder
     public void encoderDrive(double speed,
@@ -227,7 +353,7 @@ public class RedRightAuto extends LinearOpMode {
     }
 
     //The method turns the robot by a specific angle, -180 to +180.
-    public void rotate(int degrees, double power) {
+    public void rotate(double degrees, double power) {
         double leftPower, rightPower;
         if (degrees > 0) {
 
@@ -313,5 +439,104 @@ public class RedRightAuto extends LinearOpMode {
         }
 
     }
+
+    public void duckByTime(double power, long time) {
+
+        spinner.setPower(power);
+
+        sleep(time);
+
+        spinner.setPower(0);
+    }
+
+
+
+    public void armVisionEncoder(double speed, BarcodePositionDetector.BarcodePosition bP, double timeoutS) {
+        int newTarget;
+        double inches = 0;
+
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+
+            //barcode check command for height
+            if (bP == BarcodePositionDetector.BarcodePosition.LEFT) {
+                inches = -10;
+            } else if (bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
+                inches = -5.0;
+
+            } else if (bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
+                inches = -8.0;
+
+            }
+
+
+            // Determine new target position, and pass to motor controller
+            newTarget = arm.getCurrentPosition() + (int) (inches * ARM_PER_INCH);
+
+            arm.setTargetPosition(newTarget);
+
+            // Turn On RUN_TO_POSITION
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            arm.setPower(Math.abs(speed));
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (arm.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Path1", "Running to", arm);
+                telemetry.addData("Path2", "Running at");
+                telemetry.update();
+            }
+
+
+            // Stop all motion;
+            arm.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        }
+    }
+
+    public void armVisionEncoderInches(double speed, double inches, double timeoutS) {
+        int newTarget;
+
+        // Determine new target position, and pass to motor controller
+        newTarget = arm.getCurrentPosition() + (int) (inches * ARM_PER_INCH);
+
+        arm.setTargetPosition(newTarget);
+
+        // Turn On RUN_TO_POSITION
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        // reset the timeout time and start motion.
+        runtime.reset();
+        arm.setPower(Math.abs(speed));
+
+        while (opModeIsActive() &&
+                (runtime.seconds() < timeoutS) &&
+                (arm.isBusy())) {
+
+            // Display it for the driver.
+            telemetry.addData("Path1", "Running to", arm);
+            telemetry.addData("Path2", "Running at");
+            telemetry.update();
+        }
+
+
+        // Stop all motion;
+        arm.setPower(0);
+
+        // Turn off RUN_TO_POSITION
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+    }
+
 
 }

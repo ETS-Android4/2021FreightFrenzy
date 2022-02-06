@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -151,7 +150,14 @@ public class RedRightAuto extends LinearOpMode {
 
             rotate(15, 0.5);
 
-            encoderDrive(0.5, 24, 24, 0.2);
+            encoderDrive(0.65, 24, 24, 2);
+
+            encoderDrive(0.5, 8, 0, 2);
+
+            encoderDrive(0.65, 48, 48, 2);
+
+
+
 /**
             encoderDrive(0.5, 27.5, 27.5, 2.0);
             sleep(1000);
@@ -194,7 +200,11 @@ public class RedRightAuto extends LinearOpMode {
 
             rotate(15, 0.5);
 
-            encoderDrive(0.5, 24, 24, 0.2);
+            encoderDrive(0.65, 24, 24, 2);
+
+            encoderDrive(0.5, 8, 0, 2);
+
+            encoderDrive(0.65, 48, 48, 2);
 
             /**
              armVisionEncoderInches(0.5, -3, 2);
@@ -232,15 +242,13 @@ public class RedRightAuto extends LinearOpMode {
 
             sleep(1000);
 
-            encoderDrive(0.5, 5, 5, 2);
+            rotate(15, 0.5);
 
-            rotate(-45, 0.5);
+            encoderDrive(0.65, 24, 24, 2);
 
-            encoderDrive(0.5, 20, 20, 2);
+            encoderDrive(0.5, 8, 0, 2);
 
-            rotate(55, 0.5);
-
-            encoderDrive(0.5, 30, 30, 2);
+            encoderDrive(0.65, 48, 48, 2);
 
         }
 

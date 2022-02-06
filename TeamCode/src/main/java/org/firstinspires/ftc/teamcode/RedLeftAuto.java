@@ -171,6 +171,7 @@ public class RedLeftAuto extends LinearOpMode {
             sleep (1000);
             encoderDrive(0.35, -42, -42, 2.0);
             encoderDrive(0.2, -2, 0, 2.0);
+            encoderDrive(.2, -2, 0, 2.0);
 
             duckByTime(-.5, 5000);
 
@@ -256,7 +257,6 @@ public class RedLeftAuto extends LinearOpMode {
             sleep(1000);
 
 
-
             encoderDrive(0.5, 28, 28, 2.0);
             sleep(1000);
             rotate(205.5, 0.5);
@@ -264,7 +264,7 @@ public class RedLeftAuto extends LinearOpMode {
             sleep (1000);
 
             encoderDrive(0.35, -42, -42, 2.0);
-
+            encoderDrive(.2, -2, 0, 2.0);
             duckByTime(-.55, 5000);
 
             encoderDrive(0.5, 3, 3,  2.0);

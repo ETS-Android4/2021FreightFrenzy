@@ -4,14 +4,10 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @TeleOp(name = "DriveTrainTestLinearOp")
@@ -20,8 +16,8 @@ public class MainTeleOp extends LinearOpMode {
     //Constants for movement.
     static final double COUNTS_PER_MOTOR_REV = 537.6;
     static final double ARM_GEAR_REDUCTION = 5.0;
-    static final double WHEEL_DIAMETER_INCHES = 2.45;
-    static final double ARM_RATIO = 0.4;
+    static final double WHEEL_DIAMETER_INCHES = 1.9;
+    static final double ARM_RATIO = 1.0;
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * ARM_GEAR_REDUCTION * ARM_RATIO) /
             (WHEEL_DIAMETER_INCHES * 3.14159265);
     static final double OPEN = 0.44;
@@ -119,7 +115,7 @@ public class MainTeleOp extends LinearOpMode {
             //arm
 
             //arm up
-            if (gamepad1.dpad_up) {
+            if (gamepad2.dpad_up) {
 
                 arm.setPower(0.65);
 
@@ -130,7 +126,7 @@ public class MainTeleOp extends LinearOpMode {
             }
 
 
-            if (gamepad1.dpad_down) {
+            if (gamepad2.dpad_down) {
 
                 arm.setPower(-0.65);
 
@@ -167,13 +163,13 @@ public class MainTeleOp extends LinearOpMode {
             }
 
 
-            if (gamepad1.y) {
+            if (gamepad2.y) {
 
                 boxServo.setPosition(MIDDLE);
 
             }
 
-            if (gamepad1.a) {
+            if (gamepad2.a) {
 
                 boxServo.setPosition(CLOSE);
                 sleep(1000);

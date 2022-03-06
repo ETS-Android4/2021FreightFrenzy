@@ -63,9 +63,6 @@ public class BlueRightAuto extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        BarcodeUtil detector = new BarcodeUtil(hardwareMap, "webcam", telemetry);
-        detector.init();
-
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
         frontRight = hardwareMap.dcMotor.get("frontRight");
         backLeft = hardwareMap.dcMotor.get("backLeft");
@@ -95,6 +92,9 @@ public class BlueRightAuto extends LinearOpMode {
         telemetry.addData("Status", "Resetting Encoders");
         telemetry.update();
 
+        BarcodeUtil detector = new BarcodeUtil(hardwareMap, "webcam", telemetry);
+        detector.init();
+
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -121,21 +121,6 @@ public class BlueRightAuto extends LinearOpMode {
 
         waitForStart();
 
-        //actual code under
-        /**
-         encoderDrive(0.7, 21, 21, 1);
-         rotate(85, .5);
-         encoderDrive(0.7, 31, 31, 1);
-         rotate(85, .5);
-         encoderDrive(0.7, 14, 14, 1);
-         sleep(1000);
-         encoderDrive(0.2, 2, 2, 1);
-
-         duckByTime(-.55, 5000);
-
-         encoderDrive(0.7, -19.5,-19.5, 1);
-         **/
-
         BarcodePositionDetector.BarcodePosition bP = detector.getBarcodePosition();
 
         telemetry.addLine( "Position: " + detector.getBarcodePosition());
@@ -152,11 +137,13 @@ public class BlueRightAuto extends LinearOpMode {
             encoderDrive(0.5, -35, -35, 2.0);
             rotate(60, .5);
             encoderDrive(0.5, -14, -14, 2.0);
-            encoderDrive(0.3, -0.5, -0.5, 2.0);
+            encoderDrive(0.3, -2, -2, 2.0);
 
             boxServo.setPosition(CLOSE);
 
+
             sleep(1000);
+
 
 
             encoderDrive(0.5, 28, 28, 2.0);
@@ -165,38 +152,35 @@ public class BlueRightAuto extends LinearOpMode {
 
             sleep (1000);
 
-            armVisionEncoderInches(-.35, 4, 2.0);
-            arm.setPower(0.015);
-
-
-            sleep (1000);
-            encoderDrive(0.35, -42, -42, 2.0);
-            encoderDrive(.2, -2, 0, 2.0);
-
+            encoderDrive(0.35, -30, -30, 2.0);
+            encoderDrive(0.35, -3, -3, 2.0);
             duckByTime(.55, 5000);
 
             encoderDrive(0.5, 3, 3,  2.0);
-            resetAngle();
-            rotate(5, 0.5);
-            encoderDrive(0.5, 20,20, 2.0);
 
-            //parking left
+            rotate(10, 0.6);
+            resetAngle();
+
+            encoderDrive(0.5, 20,20, 2.0);
 
         } else if (bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
 
             armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
             armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
-            armVisionEncoderInches(-.35, 1.5, 2.0);
+            armVisionEncoderInches(-.35, 2.2, 2.0);
+
             arm.setPower(0.015);
 
             encoderDrive(0.5, -35, -35, 2.0);
             rotate(60, .5);
             encoderDrive(0.5, -14, -14, 2.0);
-            encoderDrive(0.3, -1, -1, 2.0);
+            encoderDrive(0.3, -2, -2, 2.0);
 
             boxServo.setPosition(CLOSE);
 
+
             sleep(1000);
+
 
 
             encoderDrive(0.5, 28, 28, 2.0);
@@ -205,19 +189,15 @@ public class BlueRightAuto extends LinearOpMode {
 
             sleep (1000);
 
-            armVisionEncoderInches(-.35, 4, 2.0);
-            arm.setPower(0.015);
-
-
-            sleep (1000);
-            encoderDrive(0.35, -42, -42, 2.0);
-            encoderDrive(.2, -2, 0, 2.0);
-
+            encoderDrive(0.35, -30, -30, 2.0);
+            encoderDrive(0.35, -3, -3, 2.0);
             duckByTime(.55, 5000);
 
             encoderDrive(0.5, 3, 3,  2.0);
+
+            rotate(10, 0.6);
             resetAngle();
-            rotate(5, 0.5);
+
             encoderDrive(0.5, 20,20, 2.0);
 
             /**
@@ -243,7 +223,7 @@ public class BlueRightAuto extends LinearOpMode {
 
             armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
             armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
-            armVisionEncoderInches(-.35, -1, 2.0);
+            armVisionEncoderInches(-.35, 2.2, 2.0);
 
             arm.setPower(0.015);
 
@@ -254,7 +234,9 @@ public class BlueRightAuto extends LinearOpMode {
 
             boxServo.setPosition(CLOSE);
 
+
             sleep(1000);
+
 
 
             encoderDrive(0.5, 28, 28, 2.0);
@@ -263,19 +245,15 @@ public class BlueRightAuto extends LinearOpMode {
 
             sleep (1000);
 
-            armVisionEncoderInches(-.35, 4, 2.0);
-            arm.setPower(0.015);
-
-
-            sleep (1000);
-            encoderDrive(0.35, -42, -42, 2.0);
-            encoderDrive(.2, -2, 0, 2.0);
-
+            encoderDrive(0.35, -30, -30, 2.0);
+            encoderDrive(0.35, -3, -3, 2.0);
             duckByTime(.55, 5000);
 
             encoderDrive(0.5, 3, 3,  2.0);
+
+            rotate(10, 0.6);
             resetAngle();
-            rotate(5, 0.5);
+
             encoderDrive(0.5, 20,20, 2.0);
 
         }
@@ -284,7 +262,6 @@ public class BlueRightAuto extends LinearOpMode {
         telemetry.update();
 
     }
-
 
     //Method for driving with encoder
     public void encoderDrive(double speed,
@@ -457,7 +434,7 @@ public class BlueRightAuto extends LinearOpMode {
 
     }
 
-    public void duckByTime(double power, long time) {
+    public void duckByTime (double power, long time){
 
         spinner.setPower(power);
 
@@ -552,6 +529,5 @@ public class BlueRightAuto extends LinearOpMode {
 
 
     }
+
 }
-
-

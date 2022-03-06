@@ -171,7 +171,6 @@ public class RedLeftAuto extends LinearOpMode {
             sleep (1000);
             encoderDrive(0.35, -42, -42, 2.0);
             encoderDrive(0.2, -2, 0, 2.0);
-            encoderDrive(.2, -2, 0, 2.0);
 
             duckByTime(-.5, 5000);
 
@@ -220,23 +219,23 @@ public class RedLeftAuto extends LinearOpMode {
             encoderDrive(0.5, 20,20, 2.0);
 
             /**
-            armVisionEncoderInches(0.5, -3, 2);
-            boxServo.setPosition(MIDDLE);
+             armVisionEncoderInches(0.5, -3, 2);
+             boxServo.setPosition(MIDDLE);
 
-            arm.setPower(-0.015);
+             arm.setPower(-0.015);
 
-            encoderDrive(0.5, -6, -6, 2.0);
-            rotate(-45, 5);
+             encoderDrive(0.5, -6, -6, 2.0);
+             rotate(-45, 5);
 
-            armVisionEncoder(0.5, BarcodePositionDetector.BarcodePosition.MIDDLE, 2.0);
-            boxServo.setPosition(CLOSE);
-            rotate(135, .5);
+             armVisionEncoder(0.5, BarcodePositionDetector.BarcodePosition.MIDDLE, 2.0);
+             boxServo.setPosition(CLOSE);
+             rotate(135, .5);
 
-            encoderDrive(0.5, 24, 24, 2.0);
-            encoderDrive(0.2, 4, 4, 2.0);
+             encoderDrive(0.5, 24, 24, 2.0);
+             encoderDrive(0.2, 4, 4, 2.0);
 
-            duckByTime(-.55, 5000);
-**/
+             duckByTime(-.55, 5000);
+             **/
 
         } else if (bP == BarcodePositionDetector.BarcodePosition.RIGHT) {
 
@@ -257,14 +256,16 @@ public class RedLeftAuto extends LinearOpMode {
             sleep(1000);
 
 
+
             encoderDrive(0.5, 28, 28, 2.0);
             sleep(1000);
             rotate(205.5, 0.5);
 
             sleep (1000);
 
-            encoderDrive(0.35, -42, -42, 2.0);
-            encoderDrive(.2, -2, 0, 2.0);
+            encoderDrive(0.35, -37, -37, 2.0);
+            encoderDrive(0.35, -4.5, 0, 2.0);
+
             duckByTime(-.55, 5000);
 
             encoderDrive(0.5, 3, 3,  2.0);
@@ -547,5 +548,3 @@ public class RedLeftAuto extends LinearOpMode {
 
     }
 }
-
-

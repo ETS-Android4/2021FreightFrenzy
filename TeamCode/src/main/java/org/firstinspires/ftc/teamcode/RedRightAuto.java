@@ -139,53 +139,10 @@ public class RedRightAuto extends LinearOpMode {
 
             arm.setPower(0.015);
 
-            encoderDrive(0.5, -35, -35, 2.0);
-            rotate(60, .5);
-            encoderDrive(0.5, -14, -14, 2.0);
-            encoderDrive(0.3, -0.5, -0.5, 2.0);
-
-            boxServo.setPosition(CLOSE);
-
-            sleep(1000);
-
-            rotate(15, 0.5);
-
-            encoderDrive(0.65, 24, 24, 2);
-
-            encoderDrive(0.5, 8, 0, 2);
-
-            encoderDrive(0.65, 48, 48, 2);
-
-
-
-/**
-            encoderDrive(0.5, 27.5, 27.5, 2.0);
-            sleep(1000);
-            rotate(203, 0.5);
-
-            sleep(1000);
-
-            armVisionEncoderInches(-.35, 4, 2.0);
-            arm.setPower(-0.015);
-
-            sleep(1000);
-            encoderDrive(0.35, -42, -42, 2.0);
-            encoderDrive(0.2, -2, 0, 2.0);
-
-            duckByTime(-.55, 5000);
-
-            encoderDrive(0.5, 3, 3, 2.0);
-            resetAngle();
-            rotate(-5, 0.5);
-            encoderDrive(0.5, 20, 20, 2.0);
-
-            //parking left
-**/
-        } else if (bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
-
             armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
             armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
-            armVisionEncoderInches(-.35, 1.5, 2.0);
+            armVisionEncoderInches(-.35, 2.2, 2.0);
+
             arm.setPower(0.015);
 
             encoderDrive(0.5, -35, -35, 2.0);
@@ -195,17 +152,71 @@ public class RedRightAuto extends LinearOpMode {
 
             boxServo.setPosition(CLOSE);
 
+            sleep(1000);
+
+            encoderDrive(0.5, 5, 5, 2);
+
+            rotate(-45, 0.5);
+
+            encoderDrive(0.5, 20, 20, 2);
+
+            rotate(55, 0.5);
+
+            encoderDrive(0.5, 30, 30, 2);
+/**
+ encoderDrive(0.5, 27.5, 27.5, 2.0);
+ sleep(1000);
+ rotate(203, 0.5);
+
+ sleep(1000);
+
+ armVisionEncoderInches(-.35, 4, 2.0);
+ arm.setPower(-0.015);
+
+ sleep(1000);
+ encoderDrive(0.35, -42, -42, 2.0);
+ encoderDrive(0.2, -2, 0, 2.0);
+
+ duckByTime(-.55, 5000);
+
+ encoderDrive(0.5, 3, 3, 2.0);
+ resetAngle();
+ rotate(-5, 0.5);
+ encoderDrive(0.5, 20, 20, 2.0);
+
+ //parking left
+ **/
+        } else if (bP == BarcodePositionDetector.BarcodePosition.MIDDLE) {
+
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoderInches(-.35, 1.5, 2.0);
+            arm.setPower(0.015);
+
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoder(0.35, BarcodePositionDetector.BarcodePosition.LEFT, 2.0);
+            armVisionEncoderInches(-.35, 2.2, 2.0);
+
+            arm.setPower(0.015);
+
+            encoderDrive(0.5, -35, -35, 2.0);
+            rotate(60, .5);
+            encoderDrive(0.5, -14, -14, 2.0);
+            encoderDrive(0.3, -1, -1, 2.0);
+
+            boxServo.setPosition(CLOSE);
 
             sleep(1000);
 
-            rotate(15, 0.5);
+            encoderDrive(0.5, 5, 5, 2);
 
-            encoderDrive(0.65, 24, 24, 2);
+            rotate(-45, 0.5);
 
-            encoderDrive(0.5, 8, 0, 2);
+            encoderDrive(0.5, 20, 20, 2);
 
-            encoderDrive(0.65, 48, 48, 2);
+            rotate(55, 0.5);
 
+            encoderDrive(0.5, 30, 30, 2);
             /**
              armVisionEncoderInches(0.5, -3, 2);
              boxServo.setPosition(MIDDLE);
@@ -242,13 +253,15 @@ public class RedRightAuto extends LinearOpMode {
 
             sleep(1000);
 
-            rotate(15, 0.5);
+            encoderDrive(0.5, 5, 5, 2);
 
-            encoderDrive(0.65, 24, 24, 2);
+            rotate(-45, 0.5);
 
-            encoderDrive(0.5, 8, 0, 2);
+            encoderDrive(0.5, 20, 20, 2);
 
-            encoderDrive(0.65, 48, 48, 2);
+            rotate(55, 0.5);
+
+            encoderDrive(0.5, 30, 30, 2);
 
         }
 
